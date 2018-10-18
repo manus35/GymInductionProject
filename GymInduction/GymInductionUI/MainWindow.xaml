@@ -1,0 +1,50 @@
+﻿<Window x:Class="GymInductionUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GymInductionUI"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        Title="LoginUi"  MaxWidth="700" MinWidth="700" MaxHeight="250" MinHeight="250">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+
+        </Grid.RowDefinitions>
+
+        <Label Name="lblHeading" 
+               Grid.Row="0" Grid.Column="0" 
+               HorizontalAlignment="Center" FontSize="18" Margin="0,5"
+               Content="Please login to access the Application" 
+               Grid.ColumnSpan="3"/>
+
+        <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,0,20">
+            <Label  Content="Username" Margin="0,10,0,10" />
+            <Label  Content="Password"  Margin="0,10"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical" Margin="10,0,0,20">
+            <TextBox Name="tbxUsername" Grid.Row="1" Grid.Column="1" Height="26" Width="200" Margin="0,10" TabIndex="0" ToolTip="Please enter your username in this textbox"/>
+            <PasswordBox Name="tbxPassword" Grid.Row="2" Grid.Column="1" Height="26" Width="200"  Margin="0,10" TabIndex="1" ToolTip="Please enter your password in this textbox"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="right" Margin="0,10">
+            <Button Name="btnClose" Content="Close" Height="26" Width="130" Margin="10,1" ToolTip="Click here to exit application"/>
+            <Button Name="btnOk" Content="Ok" Height="26" Width="130" Margin="10,1" ToolTip="Click here to confirm once you enter credentials"/>
+        </StackPanel>
+
+        <Image Grid.Row="1" Grid.Column="2" Source="images/gym.jpg" Margin="20" Grid.RowSpan="3" Stretch="None"/>
+        <Label Grid.Row="4" Grid.Column="1" Visibility="Hidden" Content="Incorrect Username or Password entered"  FontSize="16"/>
+    </Grid>
+</Window>
