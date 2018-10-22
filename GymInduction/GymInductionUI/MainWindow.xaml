@@ -44,7 +44,7 @@
             <Button Name="btnOk" Content="Ok" Height="26" Width="130" Margin="10,1" ToolTip="Click here to confirm once you enter credentials"/>
         </StackPanel>
 
-        <Image Grid.Row="1" Grid.Column="2" Source="images/gym.jpg" Margin="20" Grid.RowSpan="3" Stretch="None"/>
+        <Image Grid.Row="1" Grid.Column="2" Source="images/gym.jpg" Margin="20" Grid.RowSpan="3" Stretch="None" HorizontalAlignment="Left" />
         <Label Grid.Row="4" Grid.Column="1" Visibility="Hidden" Content="Incorrect Username or Password entered"  FontSize="16"/>
     </Grid>
 </Window>
