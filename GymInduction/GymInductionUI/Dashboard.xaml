@@ -36,8 +36,8 @@
         </StackPanel>
 
         <DockPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="6,10,6,0">
-            <Border BorderThickness="3" BorderBrush="Black" 
-                    CornerRadius="10" Padding="4">
+            <Border BorderThickness="0" BorderBrush="Black" 
+                    CornerRadius="2" Padding="4">
                 <Border.Effect>
                     <DropShadowEffect Color="Gray" Opacity=".50" ShadowDepth="4"/>
                 </Border.Effect>

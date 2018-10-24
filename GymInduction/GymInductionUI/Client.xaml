@@ -34,8 +34,20 @@
             <Button Name="btnClient" Content="Client" Height="26" Width="100" Margin="10,0" />
             <Button Name="btnExit" Content="Exit" Height="26" Width="100" Margin="10,0" />
         </StackPanel>
+        <DockPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="6,10,6,0">
+            <Border BorderThickness="0" BorderBrush="Black" 
+                    CornerRadius="2" Padding="4">
+                <Border.Effect>
+                    <DropShadowEffect Color="Gray" Opacity=".50" ShadowDepth="4"/>
+                </Border.Effect>
 
-        
+                <Frame Name="frmMain" />
+
+            </Border>
+
+        </DockPanel>
+
+
         <TabControl Name="tbcClient" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="6,10,6,0">
             <TabItem Header="Client Details" Name="tbiClientDetails">
                 <Grid>
@@ -70,7 +82,7 @@
                         </StackPanel>
                 </Grid>
             </TabItem>
-            <TabItem Header="Induction Details Details" Name="tbiInductionDetails">
+            <TabItem Header="Induction Details" Name="tbiInductionDetails">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -139,15 +151,7 @@
                 </Grid>
             </TabItem>
 
-            <Border BorderThickness="3" BorderBrush="Black" 
-                    CornerRadius="10" Padding="4">
-                <Border.Effect>
-                    <DropShadowEffect Color="Gray" Opacity=".50" ShadowDepth="4"/>
-                </Border.Effect>
-
-                <Frame Name="frmMain" />
-
-            </Border>
+            
 
         </TabControl>
     </Grid>
