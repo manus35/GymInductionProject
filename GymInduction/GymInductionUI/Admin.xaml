@@ -32,7 +32,7 @@
             <Button Name="btnExit" Content="Exit" Height="26" Width="100" Margin="10,0" />
         </StackPanel>
         <DockPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="6,10,6,0">
-            <Border BorderThickness="0" BorderBrush="Black" 
+            <Border BorderThickness="1" BorderBrush="Black" 
                     CornerRadius="2" Padding="4">
                 <Border.Effect>
                     <DropShadowEffect Color="Gray" Opacity=".50" ShadowDepth="4"/>
@@ -50,8 +50,8 @@
         <TabControl Name="tbcAdmin" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="6,10,6,0">
 
             <TabItem Header="Users" Name="tbiUsers">
-            
-                
+
+
                 <Grid HorizontalAlignment="Left" Width="774">
                     <Grid.Background>
                         <ImageBrush ImageSource="images/dashback.jpg" Stretch="UniformToFill" Opacity=".04"></ImageBrush>
@@ -69,7 +69,7 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
-                    
+
                     <StackPanel  Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.ColumnSpan="2"  Margin="0,15,0,105" >
                         <ListView>
                             <ListView.View>
@@ -122,10 +122,11 @@
 
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="18.5"/>
-                        <ColumnDefinition Width="749.5"/>
+                        <ColumnDefinition Width="auto"/>
 
-                        <ColumnDefinition/>
+
+                        <ColumnDefinition Width="113*"/>
+                        <ColumnDefinition Width="661*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
@@ -133,7 +134,7 @@
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
 
-                    <StackPanel  Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.ColumnSpan="2"  Margin="4,15,0,0" >
+                    <StackPanel  Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.ColumnSpan="3"  Margin="5,15,0,100" >
                         <ListView>
                             <ListView.View>
                                 <GridView>
@@ -153,7 +154,7 @@
                     </StackPanel>
 
 
-                    <StackPanel Grid.Row="2"  Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Left" Margin="4,15,0,15" Grid.ColumnSpan="2"    >
+                    <StackPanel Grid.Row="2"  Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Left" Margin="5,15,0,15" Grid.ColumnSpan="3"    >
                         <ListView>
                             <ListView.View>
                                 <GridView>
@@ -172,27 +173,49 @@
                         </ListView>
                     </StackPanel>
 
-
-
-
-
-
-
-
-
-
                 </Grid>
             </TabItem>
 
             <TabItem Header="Logs" Name="tbiLogs">
-                <Grid>
+                <Grid HorizontalAlignment="Left" Width="774">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="images/dashback.jpg" Stretch="UniformToFill" Opacity=".04"></ImageBrush>
+                    </Grid.Background>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+
+
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel  Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.ColumnSpan="2"  Margin="14,100,0,0" >
+                        <ListView>
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Date/Time" 
+                                    Width="150" />
+                                    <GridViewColumn Header="User ID" 
+                                    Width="150"/>
+                                    <GridViewColumn Header="Event" 
+                                    Width="150"/>
+
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </StackPanel>
+
+
+
 
                 </Grid>
             </TabItem>
-
-
-
-
 
         </TabControl>
     </Grid>

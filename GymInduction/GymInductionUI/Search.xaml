@@ -72,6 +72,7 @@
                                     Width="150"/>
                                     <GridViewColumn Header="Date Of Birth" 
                                     Width="150"/>
+                                    
                                     <GridViewColumn Header="Phone Number" 
                                     Width="150"/>
                                   
