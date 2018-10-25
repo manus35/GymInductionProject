@@ -23,5 +23,16 @@ namespace GymInductionUI
         {
             InitializeComponent();
         }
+
+        private void btnAdmin_Click(object sender, RoutedEventArgs e)
+        {
+            Admin admin = new Admin();
+            frmMain.Navigate(admin);
+        }
+
+        private void btnExit_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }

@@ -13,18 +13,279 @@
             <ImageBrush ImageSource="images/dashback.jpg" Stretch="UniformToFill" Opacity=".04"></ImageBrush>
         </Grid.Background>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="90*"/>
+            <RowDefinition Height="10*"/>
         </Grid.RowDefinitions>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="50*"/>
-            <ColumnDefinition Width="50*"/>
-        </Grid.ColumnDefinitions>
+
 
         <StackPanel>
-            
-            
+            <TabControl Height="400">
+
+                <TabControl.Resources>
+                    <Style TargetType="{x:Type TabItem}">
+                        <Setter Property="FontSize" Value="14" />
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="FontFamily" Value="Calibri" />
+                        <Setter Property="BorderBrush" Value="Black" />
+                        <Setter Property="Padding" Value="10" />
+                    </Style>
+                </TabControl.Resources>
+
+                <TabItem Header="Users" Name="tbiUsers">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="24*"/>
+                            <ColumnDefinition Width="9*"/>
+                            <ColumnDefinition Width="761*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.Background>
+                            <ImageBrush ImageSource="images/dashback.jpg" Stretch="UniformToFill" Opacity=".04"></ImageBrush>
+                        </Grid.Background>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50*"/>
+                            <RowDefinition Height="50*"/>
+                        </Grid.RowDefinitions>
+
+                        <ListView Name="lstUsers" Grid.Row="0" Grid.ColumnSpan="3">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Username"  Width="150">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+
+                                    <GridViewColumn Header="Password"  Width="150">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+
+                                    <GridViewColumn Header="First Name"  Width="150">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+
+                                    <GridViewColumn Header="Last Name"  Width="150">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+
+                                    <GridViewColumn Header="Access Level"  Width="150">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+
+
+
+                                </GridView>
+                            </ListView.View>
+
+                        </ListView>
+
+
+                        <StackPanel Name="stkUserDetails" Grid.Row="1" HorizontalAlignment="Center" Grid.Column="2" Margin="255,0,288,0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="30*"/>
+                                    <ColumnDefinition Width="70*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="16*"/>
+                                    <RowDefinition Height="16*"/>
+                                    <RowDefinition Height="16*"/>
+                                    <RowDefinition Height="16*"/>
+                                    <RowDefinition Height="16*"/>
+                                    <RowDefinition Height="16*"/>
+                                </Grid.RowDefinitions>
+                                <Label Grid.Row="0" Grid.Column="0" Content="Username" />
+                                <Label Grid.Row="1" Grid.Column="0" Content="Password" />
+                                <Label Grid.Row="2" Grid.Column="0" Content="First Name" />
+                                <Label Grid.Row="3" Grid.Column="0" Content="Last Name" />
+                                <Label Grid.Row="4" Grid.Column="0" Content="Access Level" />
+
+                                <TextBox Grid.Row="0" Grid.Column="1" Name="tbxUsername" />
+                                <TextBox Grid.Row="1" Grid.Column="1" Name="tbxPassword" />
+                                <TextBox Grid.Row="2" Grid.Column="1" Name="tbxFirstName" />
+                                <TextBox Grid.Row="3" Grid.Column="1" Name="tbxLastName" />
+                                <ComboBox Grid.Row="4" Grid.Column="1" Name="cmbAccessLevel" Width="150">
+                                    <ComboBoxItem Content="Instructor" />
+                                    <ComboBoxItem Content="Administrator" />
+                                    <ComboBoxItem Content="Nutritionist" />
+                                </ComboBox>
+                                <Button Grid.Row="5" Grid.Column="1" Name="btnUpdate" Content="update" Width="150" Height="26" HorizontalAlignment="Right"/>
+
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
+
+
+                </TabItem>
+
+                <TabItem Header="Analytics" Name="tbiAnalytics">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="24*"/>
+                            <ColumnDefinition Width="9*"/>
+                            <ColumnDefinition Width="761*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.Background>
+                            <ImageBrush ImageSource="images/dashback.jpg" Stretch="UniformToFill" Opacity=".04"></ImageBrush>
+                        </Grid.Background>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50*"/>
+                            <RowDefinition Height="50*"/>
+                        </Grid.RowDefinitions>
+
+                        <ListView Name="lstAnalytics" Grid.Row="0" Grid.ColumnSpan="3">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Pending Inductions"  Width="150">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+
+                                    <GridViewColumn Header="Completed Inductions"  Width="150">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+
+                                    <GridViewColumn Header="Failed Inductions"  Width="150">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+
+                                    <GridViewColumn Header="Average Height"  Width="150">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+
+                                    <GridViewColumn Header="Average Weight"  Width="150">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+
+
+
+                                </GridView>
+                            </ListView.View>
+
+                        </ListView>
+
+                        <ListView Name="lstAnalytics2" Grid.Row="2" Grid.Column="2">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Average BMI"  Width="150">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+
+                                    <GridViewColumn Header="Average Heart Rate"  Width="150">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+
+
+
+
+                                </GridView>
+                            </ListView.View>
+
+                        </ListView>
+
+
+
+                    </Grid>
+                </TabItem>
+
+                <TabItem Header="Logs" Name="tbiLogs">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="24*"/>
+                            <ColumnDefinition Width="9*"/>
+                            <ColumnDefinition Width="761*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.Background>
+                            <ImageBrush ImageSource="images/dashback.jpg" Stretch="UniformToFill" Opacity=".04"></ImageBrush>
+                        </Grid.Background>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50*"/>
+                            <RowDefinition Height="50*"/>
+                        </Grid.RowDefinitions>
+
+                        <ListView Name="lstAnalyticsj" Grid.Row="0" Grid.ColumnSpan="3">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Sate/Time"  Width="150">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+
+                                    <GridViewColumn Header="User ID"  Width="150">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+
+                                    <GridViewColumn Header="Event"  Width="150">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+
+                                </GridView>
+                            </ListView.View>
+
+                        </ListView>
+
+
+
+                    </Grid>
+                </TabItem>
+            </TabControl>
+
         </StackPanel>
     </Grid>
 </Page>
