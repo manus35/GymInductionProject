@@ -101,6 +101,25 @@
 
                             </GridView>
                         </ListView.View>
+                        <ListView.ContextMenu>
+                            <ContextMenu Name="mnuUserListOverview" IsEnabled="True">
+                                <ContextMenu.Items>
+                                   
+                                    <MenuItem Header="Modify current Client" Name="submenuModUser" IsEnabled="False">
+                                        <MenuItem.Icon>
+                                            <Image Source="images/edit.png"  />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <MenuItem Header="Delete Current Client" Name="submenuDelUser" IsEnabled="False">
+                                        <MenuItem.Icon>
+                                            <Image Source="images/delete.png"  />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                </ContextMenu.Items>
+                            </ContextMenu>
+
+                        </ListView.ContextMenu>
+
 
                     </ListView>
 

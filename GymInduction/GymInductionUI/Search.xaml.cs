@@ -24,5 +24,12 @@ namespace GymInductionUI
         {
             InitializeComponent();
         }
+
+        private void submenuAddUser_Click(object sender, RoutedEventArgs e)
+        {
+            Client client = new Client();
+
+            client.Show();
+        }
     }
 }

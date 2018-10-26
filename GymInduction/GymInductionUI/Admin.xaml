@@ -99,17 +99,17 @@
                             <ListView.ContextMenu>
                                 <ContextMenu Name="mnuUserListOverview" IsEnabled="True">
                                     <ContextMenu.Items>
-                                        <MenuItem Header="Add New User"   Name="submenuAddUser" IsEnabled="True">
+                                        <MenuItem Header="Add New User"   Name="submenuAddUser" IsEnabled="True" Click="submenuAddUser_Click">
                                             <MenuItem.Icon>
                                                 <Image Source="images/add.png" />
                                             </MenuItem.Icon>
                                             </MenuItem>
-                                        <MenuItem Header="Modify selected User" Name="submenuModUser" IsEnabled="True">
+                                        <MenuItem Header="Modify selected User" Name="submenuModUser" IsEnabled="False">
                                             <MenuItem.Icon>
                                                 <Image Source="images/edit.png"  />
                                             </MenuItem.Icon>
                                         </MenuItem>
-                                        <MenuItem Header="Delete selected User" Name="submenuDelUser" IsEnabled="True">
+                                        <MenuItem Header="Delete selected User" Name="submenuDelUser" IsEnabled="False">
                                             <MenuItem.Icon>
                                                 <Image Source="images/delete.png"  />
                                             </MenuItem.Icon>
@@ -151,7 +151,7 @@
                                     <ComboBoxItem Content="Administrator" />
                                     <ComboBoxItem Content="Nutritionist" />
                                 </ComboBox>
-                                <Button Grid.Row="5" Grid.Column="1" Name="btnUpdate" Content="update" Width="150" Height="26" HorizontalAlignment="Right"/>
+                                <Button Grid.Row="5" Grid.Column="1" Name="btnUpdate" Content="update" Click="btnUpdate_Click" Width="150" Height="26" HorizontalAlignment="Right"/>
 
                             </Grid>
                         </StackPanel>

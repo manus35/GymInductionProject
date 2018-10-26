@@ -38,7 +38,8 @@ namespace GymInductionUI
         private void btnClient_Click(object sender, RoutedEventArgs e)
         {
             Client client = new Client();
-            frmMain.Navigate(client);
+            
+            client.Show();
         }
 
         private void btnSearch_Click(object sender, RoutedEventArgs e)

@@ -24,5 +24,15 @@ namespace GymInductionUI
         {
             InitializeComponent();
         }
+
+        private void submenuAddUser_Click(object sender, RoutedEventArgs e)
+        {
+            stkUserDetails.Visibility = Visibility.Visible;
+        }
+
+        private void btnUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            stkUserDetails.Visibility = Visibility.Collapsed;
+        }
     }
 }

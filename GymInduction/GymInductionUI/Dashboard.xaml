@@ -31,7 +31,7 @@
         <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,10" >
             
             <Button Name="btnAdmin" Content="Admin" Height="26" Width="100" Margin="10,0" Click="btnAdmin_Click" />
-            <Button Name="btnClient" Content="Client" Height="26" Width="100" Margin="10,0" Click="btnClient_Click" />
+            <Button Name="btnClient" Content="Add Client" Height="26" Width="100" Margin="10,0" Click="btnClient_Click" />
             <Button Name="btnExit" Content="Exit" Height="26" Width="100" Margin="10,0" Click="btnExit_Click" />
         </StackPanel>
 
