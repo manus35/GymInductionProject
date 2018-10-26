@@ -37,7 +37,8 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="24*"/>
                             <ColumnDefinition Width="9*"/>
-                            <ColumnDefinition Width="761*"/>
+                            <ColumnDefinition Width="60*"/>
+                            <ColumnDefinition Width="701*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.Background>
                             <ImageBrush ImageSource="images/dashback.jpg" Stretch="UniformToFill" Opacity=".04"></ImageBrush>
@@ -47,7 +48,7 @@
                             <RowDefinition Height="50*"/>
                         </Grid.RowDefinitions>
 
-                        <ListView Name="lstUsers" Grid.Row="0" Grid.ColumnSpan="3">
+                        <ListView Name="lstUsers" Grid.Row="0" Grid.ColumnSpan="4">
                             <ListView.View>
                                 <GridView>
                                     <GridViewColumn Header="Username"  Width="150">
@@ -98,7 +99,7 @@
                         </ListView>
 
 
-                        <StackPanel Name="stkUserDetails" Grid.Row="1" HorizontalAlignment="Center" Grid.Column="2" Margin="255,0,288,0">
+                        <StackPanel Name="stkUserDetails" Grid.Row="1" HorizontalAlignment="Center" Grid.Column="3" Margin="197,0,290,0">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="30*"/>

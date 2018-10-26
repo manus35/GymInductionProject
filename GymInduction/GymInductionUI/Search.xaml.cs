@@ -10,6 +10,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace GymInductionUI
@@ -17,7 +18,7 @@ namespace GymInductionUI
     /// <summary>
     /// Interaction logic for Search.xaml
     /// </summary>
-    public partial class Search : Window
+    public partial class Search : Page
     {
         public Search()
         {
