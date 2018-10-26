@@ -96,10 +96,33 @@
                                 </GridView>
                             </ListView.View>
 
+                            <ListView.ContextMenu>
+                                <ContextMenu Name="mnuUserListOverview" IsEnabled="True">
+                                    <ContextMenu.Items>
+                                        <MenuItem Header="Add New User"   Name="submenuAddUser" IsEnabled="True">
+                                            <MenuItem.Icon>
+                                                <Image Source="images/add.png" />
+                                            </MenuItem.Icon>
+                                            </MenuItem>
+                                        <MenuItem Header="Modify selected User" Name="submenuModUser" IsEnabled="True">
+                                            <MenuItem.Icon>
+                                                <Image Source="images/edit.png"  />
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                        <MenuItem Header="Delete selected User" Name="submenuDelUser" IsEnabled="True">
+                                            <MenuItem.Icon>
+                                                <Image Source="images/delete.png"  />
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                    </ContextMenu.Items>
+                                </ContextMenu>
+                                
+                            </ListView.ContextMenu>
+
                         </ListView>
 
 
-                        <StackPanel Name="stkUserDetails" Grid.Row="1" HorizontalAlignment="Center" Grid.Column="3" Margin="197,0,290,0">
+                        <StackPanel Name="stkUserDetails" Grid.Row="1" HorizontalAlignment="Center" Grid.Column="3" Margin="197,0,290,0" Visibility="Collapsed">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="30*"/>

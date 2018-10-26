@@ -128,5 +128,10 @@
   <ItemGroup>
     <Resource Include="images\dashback.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\add.png" />
+    <Resource Include="images\delete.png" />
+    <Resource Include="images\edit.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
