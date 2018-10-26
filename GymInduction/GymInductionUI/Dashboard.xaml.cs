@@ -34,5 +34,17 @@ namespace GymInductionUI
         {
             this.Close();
         }
+
+        private void btnClient_Click(object sender, RoutedEventArgs e)
+        {
+            Client client = new Client();
+            frmMain.Navigate(client);
+        }
+
+        private void btnSearch_Click(object sender, RoutedEventArgs e)
+        {
+            Search search = new Search();
+            frmMain.Navigate(search);
+        }
     }
 }
