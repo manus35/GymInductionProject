@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GymLibrary;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,6 +20,7 @@ namespace GymInductionUI
     /// </summary>
     public partial class Dashboard : Window
     {
+        public User user = new User();
         public Dashboard()
         {
             InitializeComponent();
@@ -46,6 +48,28 @@ namespace GymInductionUI
         {
             Search search = new Search();
             frmMain.Navigate(search);
+        }
+
+        private void checkUserAccess(User user)
+        {
+            if(user.LevelId== 1)
+            {
+                btnAdmin.Visibility = Visibility.Visible;    
+            }
+            if (user.LevelId == 2)
+            {
+                btnAdmin.Content = "Schedule";
+                btnAdmin.Visibility = Visibility.Visible;
+            }
+            if (user.LevelId == 4)
+            {
+                btnClient.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            checkUserAccess(user);
         }
     }
 }

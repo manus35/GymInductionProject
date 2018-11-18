@@ -5,8 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GymInductionUI"
         mc:Ignorable="d"
-        WindowState="Maximized"
-        WindowStyle="ToolWindow"
+        WindowState="Normal"
+        WindowStyle="None"
+        Loaded="Window_Loaded"
+       
+        
         Title="Dashboard" Height="450" Width="800">
     <Grid>
         <Grid.Background>
@@ -30,16 +33,16 @@
 
         <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,10" >
             
-            <Button Name="btnAdmin" Content="Admin" Height="26" Width="100" Margin="10,0" Click="btnAdmin_Click" />
-            <Button Name="btnClient" Content="Add Client" Height="26" Width="100" Margin="10,0" Click="btnClient_Click" />
+            <Button Name="btnAdmin" Visibility="Collapsed" Content="Admin" Height="26" Width="100" Margin="10,0" Click="btnAdmin_Click" />
+            <Button Name="btnClient"  Content="Add Client" Height="26" Width="100" Margin="10,0" Click="btnClient_Click" />
             <Button Name="btnExit" Content="Exit" Height="26" Width="100" Margin="10,0" Click="btnExit_Click" />
         </StackPanel>
 
         <DockPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="6,10,6,0">
-            <Border BorderThickness="1" BorderBrush="Black" 
+            <Border BorderThickness="1,3,1,5" BorderBrush="DodgerBlue" 
                     CornerRadius="2" Padding="4">
                 <Border.Effect>
-                    <DropShadowEffect Color="Gray" Opacity=".50" ShadowDepth="4"/>
+                    <DropShadowEffect Color="blue" Opacity=".50" ShadowDepth="4"/>
                 </Border.Effect>
 
                 <Frame Name="frmMain" />

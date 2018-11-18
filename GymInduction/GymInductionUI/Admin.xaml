@@ -48,7 +48,7 @@
                             <RowDefinition Height="50*"/>
                         </Grid.RowDefinitions>
 
-                        <ListView Name="lstUsers" Grid.Row="0" Grid.ColumnSpan="4">
+                        <ListView Name="lstUsers" Grid.Row="0" Grid.ColumnSpan="4" Height="178" VerticalAlignment="Top">
                             <ListView.View>
                                 <GridView>
                                     <GridViewColumn Header="Username"  Width="150">

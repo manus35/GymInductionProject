@@ -40,11 +40,11 @@
         </StackPanel>
 
         <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="right" Margin="0,10">
-            <Button Name="btnClose" Content="Close" Height="26" Width="130" Margin="10,1" ToolTip="Click here to exit application"/>
-            <Button Name="btnOk" Content="Ok" Height="26" Width="130" Margin="10,1" ToolTip="Click here to confirm once you enter credentials"/>
+            <Button Name="btnClose" Content="Close" Height="26" Width="130" Margin="10,1" ToolTip="Click here to exit application" Click="btnClose_Click"/>
+            <Button Name="btnOk" Content="Ok" Height="26" Width="130" Margin="10,1" ToolTip="Click here to confirm once you enter credentials" Click="btnOk_Click"/>
         </StackPanel>
 
         <Image Grid.Row="1" Grid.Column="2" Source="images/gym.jpg" Margin="20" Grid.RowSpan="3" Stretch="None" HorizontalAlignment="Left" />
-        <Label Grid.Row="4" Grid.Column="1" Visibility="Hidden" Content="Incorrect Username or Password entered"  FontSize="16"/>
+        <Label Name="lblError" Grid.Row="4" Grid.Column="1" FontStretch="SemiExpanded" FontWeight="Bold"  FontSize="16"/>
     </Grid>
 </Window>
