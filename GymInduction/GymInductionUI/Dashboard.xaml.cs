@@ -21,6 +21,10 @@ namespace GymInductionUI
     public partial class Dashboard : Window
     {
         public User user = new User();
+        public Client client = new Client();
+        public Evaluation evaluation = new Evaluation();
+        public Induction induction = new Induction();
+
         public Dashboard()
         {
             InitializeComponent();
@@ -35,6 +39,7 @@ namespace GymInductionUI
         private void btnExit_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+            Environment.Exit(0);
         }
 
         private void btnClient_Click(object sender, RoutedEventArgs e)

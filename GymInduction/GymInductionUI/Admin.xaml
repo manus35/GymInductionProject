@@ -6,8 +6,9 @@
       xmlns:local="clr-namespace:GymInductionUI"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
+      Loaded="Window_Loaded"
       Title="Admin">
-
+    
     <Grid>
         <Grid.Background>
             <ImageBrush ImageSource="images/dashback.jpg" Stretch="UniformToFill" Opacity=".04"></ImageBrush>
@@ -54,7 +55,7 @@
                                     <GridViewColumn Header="Username"  Width="150">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" />
+                                                <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="{Binding Username}" />
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
@@ -62,7 +63,7 @@
                                     <GridViewColumn Header="Password"  Width="150">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" />
+                                                <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="{Binding Password}" />
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
@@ -70,15 +71,15 @@
                                     <GridViewColumn Header="First Name"  Width="150">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" />
+                                                <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="{Binding FirstName}" />
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
 
-                                    <GridViewColumn Header="Last Name"  Width="150">
+                                    <GridViewColumn Header="Last Name"   Width="150">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" />
+                                                <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap"  Text="{Binding LastName}" />
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
@@ -86,7 +87,7 @@
                                     <GridViewColumn Header="Access Level"  Width="150">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" />
+                                                <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="{Binding LevelId}" />
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
@@ -260,41 +261,39 @@
                 <TabItem Header="Logs" Name="tbiLogs">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="24*"/>
-                            <ColumnDefinition Width="9*"/>
-                            <ColumnDefinition Width="761*"/>
+                            
                         </Grid.ColumnDefinitions>
                         <Grid.Background>
                             <ImageBrush ImageSource="images/dashback.jpg" Stretch="UniformToFill" Opacity=".04"></ImageBrush>
                         </Grid.Background>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="50*"/>
-                            <RowDefinition Height="50*"/>
+                            
                         </Grid.RowDefinitions>
 
-                        <ListView Name="lstAnalyticsj" Grid.Row="0" Grid.ColumnSpan="3">
+                        <ListView Name="lstLogs" Grid.Row="0" Grid.ColumnSpan="3">
                             <ListView.View>
                                 <GridView>
-                                    <GridViewColumn Header="Sate/Time"  Width="150">
+
+                                    <GridViewColumn Header="Category"  Width="150">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" />
+                                                <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="{Binding Category}" />
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
 
-                                    <GridViewColumn Header="User ID"  Width="150">
+                                    <GridViewColumn Header="Description"  Width="150">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" />
+                                                <TextBlock  TextWrapping="Wrap" Text="{Binding Description}" />
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
 
-                                    <GridViewColumn Header="Event"  Width="150">
+                                    <GridViewColumn Header="Date/Time"  Width="150">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" />
+                                                <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="{Binding Date}" />
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
