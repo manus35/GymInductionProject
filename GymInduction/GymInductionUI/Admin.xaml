@@ -49,7 +49,7 @@
                             <RowDefinition Height="50*"/>
                         </Grid.RowDefinitions>
 
-                        <ListView Name="lstUsers" Grid.Row="0" Grid.ColumnSpan="4" Height="178" VerticalAlignment="Top">
+                        <ListView Name="lstUsers" Grid.Row="0" Grid.ColumnSpan="4" Height="178" VerticalAlignment="Top" SelectionChanged="lstUsers_SelectionChanged">
                             <ListView.View>
                                 <GridView>
                                     <GridViewColumn Header="Username"  Width="150">
@@ -98,19 +98,19 @@
                             </ListView.View>
 
                             <ListView.ContextMenu>
-                                <ContextMenu Name="mnuUserListOverview" IsEnabled="True">
+                                <ContextMenu Name="mnuUserListOverview" IsEnabled="True" >
                                     <ContextMenu.Items>
                                         <MenuItem Header="Add New User"   Name="submenuAddUser" IsEnabled="True" Click="submenuAddUser_Click">
                                             <MenuItem.Icon>
                                                 <Image Source="images/add.png" />
                                             </MenuItem.Icon>
                                             </MenuItem>
-                                        <MenuItem Header="Modify selected User" Name="submenuModUser" IsEnabled="False">
+                                        <MenuItem Header="Modify selected User" Name="submenuModUser" IsEnabled="False" Click="submenuModUser_Click">
                                             <MenuItem.Icon>
                                                 <Image Source="images/edit.png"  />
                                             </MenuItem.Icon>
                                         </MenuItem>
-                                        <MenuItem Header="Delete selected User" Name="submenuDelUser" IsEnabled="False">
+                                        <MenuItem Header="Delete selected User" Name="submenuDelUser" IsEnabled="False" Click="submenuDelUser_Click">
                                             <MenuItem.Icon>
                                                 <Image Source="images/delete.png"  />
                                             </MenuItem.Icon>
@@ -123,7 +123,7 @@
                         </ListView>
 
 
-                        <StackPanel Name="stkUserDetails" Grid.Row="1" HorizontalAlignment="Center" Grid.Column="3" Margin="197,0,290,0" Visibility="Collapsed">
+                        <StackPanel Name="stkUserDetails" Grid.Row="1" HorizontalAlignment="Center" Grid.Column="3" Margin="197,4,290,4" Visibility="Collapsed">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="30*"/>
@@ -148,12 +148,17 @@
                                 <TextBox Grid.Row="2" Grid.Column="1" Name="tbxFirstName" />
                                 <TextBox Grid.Row="3" Grid.Column="1" Name="tbxLastName" />
                                 <ComboBox Grid.Row="4" Grid.Column="1" Name="cmbAccessLevel" Width="150">
-                                    <ComboBoxItem Content="Instructor" />
-                                    <ComboBoxItem Content="Administrator" />
+                                    <ComboBoxItem Content="Please Select" />
                                     <ComboBoxItem Content="Nutritionist" />
+                                    <ComboBoxItem Content="Administrator" />
+                                    <ComboBoxItem Content="Instructor" />
+                                    <ComboBoxItem Content="Manager" />
                                 </ComboBox>
-                                <Button Grid.Row="5" Grid.Column="1" Name="btnUpdate" Content="update" Click="btnUpdate_Click" Width="150" Height="26" HorizontalAlignment="Right"/>
-
+                                <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button  Name="btnCancel" Content="Cancel" Click="btnCancel_Click" Width="100" Height="26" Margin="8,4" Background="LightPink"/>
+                                    <Button  Name="btnUpdate" Content="Update" Click="btnUpdate_Click" Width="100" Height="26" Margin="8,4" Background="LightGreen"/>
+                                    
+                                </StackPanel>
                             </Grid>
                         </StackPanel>
                     </Grid>

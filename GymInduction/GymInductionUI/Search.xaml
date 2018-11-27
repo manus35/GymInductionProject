@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:GymInductionUI"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-     
+     Loaded="Window_Loaded"
       Title="Search">
 
     <Grid>
@@ -126,7 +126,7 @@
                                 <GridViewColumn Header="Induction Date"  Width="150">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="{Binding Date}" />
+                                            <TextBlock HorizontalAlignment="Stretch" Name="tbxDate" TextWrapping="Wrap" Text="{Binding Date}" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
@@ -141,21 +141,21 @@
                                 <GridViewColumn Header="Instructor First Name"  Width="150">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" />
+                                            <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap"  Text="{Binding FirstName}" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
                                 <GridViewColumn Header="Instructor Last Name"  Width="150">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" />
+                                            <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="{Binding LastName}" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
                                 <GridViewColumn Header="Status"  Width="150">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" />
+                                            <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="{Binding StatusType}" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>

@@ -22,8 +22,10 @@ namespace GymInductionUI
     public partial class Search : Page
     {
         GymDbEntities db = new GymDbEntities("metadata=res://*/GymModel.csdl|res://*/GymModel.ssdl|res://*/GymModel.msl;provider = System.Data.SqlClient; provider connection string='data source = 192.168.1.110; initial catalog = GymDb; user id = GymUser; password=Pass.00*;pooling=False;MultipleActiveResultSets=True;App=EntityFramework'");
-        List<Client> clients = new List<Client>();
+        List<GymLibrary.Client> clients = new List<GymLibrary.Client>();
         List<Induction> inductions = new List<Induction>();
+        List<Instructor> instructors = new List<Instructor>();
+
         public Search()
         {
             InitializeComponent();
@@ -35,16 +37,28 @@ namespace GymInductionUI
 
             client.Show();
         }
-        /*
+        
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            
             lstClientDetails.ItemsSource = clients;
+            lstInductionDetails.ItemsSource = inductions;
+            //lstInductionDetails.ItemsSource = instructors;
+            //tbxDate.ItemSource = instructors
             foreach (var client in db.Clients)
             {
                 clients.Add(client);
             }
+            foreach (var induction in db.Inductions)
+            {
+                inductions.Add(induction);
+            }
+            foreach (var instructor in db.Instructors)
+            {
+                instructors.Add(instructor);
+            }
         }
-        */
+        
         
     }
 }

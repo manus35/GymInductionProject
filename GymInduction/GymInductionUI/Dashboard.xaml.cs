@@ -57,16 +57,16 @@ namespace GymInductionUI
 
         private void checkUserAccess(User user)
         {
-            if(user.LevelId== 1)
+            if(user.LevelId== 4)
             {
                 btnAdmin.Visibility = Visibility.Visible;    
             }
-            if (user.LevelId == 2)
+            if (user.LevelId == 3)
             {
                 btnAdmin.Content = "Schedule";
                 btnAdmin.Visibility = Visibility.Visible;
             }
-            if (user.LevelId == 4)
+            if (user.LevelId == 1)
             {
                 btnClient.Visibility = Visibility.Hidden;
             }
