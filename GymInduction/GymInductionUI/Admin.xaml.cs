@@ -27,7 +27,15 @@ namespace GymInductionUI
         GymDbEntities db = new GymDbEntities("metadata=res://*/GymModel.csdl|res://*/GymModel.ssdl|res://*/GymModel.msl;provider = System.Data.SqlClient; provider connection string='data source = 192.168.1.110; initial catalog = GymDb; user id = GymUser; password=Pass.00*;pooling=False;MultipleActiveResultSets=True;App=EntityFramework'");
         List<User> users = new List<User>();
         List<Log> logs = new List<Log>();
+        List<Evaluation> evaluations = new List<Evaluation>();
         User selectedUser = new User();
+        float avgHr = 0;
+        double avgHeight = 0;
+        double avgWeight = 0;
+        float avgAge = 0;
+        
+        int pendInductions = 0;
+        int avgCount = 0;
 
         enum DBOperation
         {
@@ -116,6 +124,16 @@ namespace GymInductionUI
             {
                 logs.Add(log);
             }
+            foreach (var evaluation in db.Evaluations)
+            {
+                avgHr = avgHr + evaluation.HeartRate;
+                avgCount++;
+                avgHeight = avgHeight + evaluation.Height;
+                avgWeight = avgWeight + evaluation.Weight;
+                
+            }
+            int avgAsInt = Convert.ToInt32(avgHr/avgCount);
+            txbAvgHR.Text ="The average Heart Rate of all inductees is: "+ avgAsInt.ToString();
         }
 
         private void refreshUserList()
@@ -197,7 +215,7 @@ namespace GymInductionUI
                 MessageBox.Show("Problem Deleting User record.", "Delete Database", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
             
-
+            
         }
     }
 }

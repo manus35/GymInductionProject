@@ -148,7 +148,7 @@
                                 <TextBox Grid.Row="2" Grid.Column="1" Name="tbxFirstName" />
                                 <TextBox Grid.Row="3" Grid.Column="1" Name="tbxLastName" />
                                 <ComboBox Grid.Row="4" Grid.Column="1" Name="cmbAccessLevel" Width="150">
-                                    <ComboBoxItem Content="Please Select" />
+                                    <ComboBoxItem  Content="Please Select" />
                                     <ComboBoxItem Content="Nutritionist" />
                                     <ComboBoxItem Content="Administrator" />
                                     <ComboBoxItem Content="Instructor" />
@@ -169,9 +169,9 @@
                 <TabItem Header="Analytics" Name="tbiAnalytics">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="24*"/>
-                            <ColumnDefinition Width="9*"/>
-                            <ColumnDefinition Width="761*"/>
+                            <ColumnDefinition Width="50*"/>
+                            <ColumnDefinition Width="50*"/>
+                            
                         </Grid.ColumnDefinitions>
                         <Grid.Background>
                             <ImageBrush ImageSource="images/dashback.jpg" Stretch="UniformToFill" Opacity=".04"></ImageBrush>
@@ -181,82 +181,13 @@
                             <RowDefinition Height="50*"/>
                         </Grid.RowDefinitions>
 
-                        <ListView Name="lstAnalytics" Grid.Row="0" Grid.ColumnSpan="3">
-                            <ListView.View>
-                                <GridView>
-                                    <GridViewColumn Header="Pending Inductions"  Width="150">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" />
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
-
-                                    <GridViewColumn Header="Completed Inductions"  Width="150">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" />
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
-
-                                    <GridViewColumn Header="Failed Inductions"  Width="150">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" />
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
-
-                                    <GridViewColumn Header="Average Height"  Width="150">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" />
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
-
-                                    <GridViewColumn Header="Average Weight"  Width="150">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" />
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
-
-
-
-                                </GridView>
-                            </ListView.View>
-
-                        </ListView>
-
-                        <ListView Name="lstAnalytics2" Grid.Row="2" Grid.Column="2">
-                            <ListView.View>
-                                <GridView>
-                                    <GridViewColumn Header="Average BMI"  Width="150">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" />
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
-
-                                    <GridViewColumn Header="Average Heart Rate"  Width="150">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" />
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
-
-
-
-
-                                </GridView>
-                            </ListView.View>
-
-                        </ListView>
+                        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Left" Margin="0,10">
+                            <Label Content="_Average Heart Rate:"  Width="300" Name="lblAvgHeartRate" HorizontalAlignment="Center" />
+                            <TextBox Name="txbAvgHR" IsReadOnly ="True" Width="300"/>
+                            <Label Content="_Mail:" Target="{Binding ElementName=txtMail}" Width="200" />
+                            <TextBox Name="txtMail" />
+                        </StackPanel>
+                            
 
 
 

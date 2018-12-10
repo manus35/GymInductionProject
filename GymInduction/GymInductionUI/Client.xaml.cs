@@ -22,7 +22,9 @@ namespace GymInductionUI
     {
 
         GymDbEntities db = new GymDbEntities("metadata=res://*/GymModel.csdl|res://*/GymModel.ssdl|res://*/GymModel.msl;provider = System.Data.SqlClient; provider connection string='data source = 192.168.1.110; initial catalog = GymDb; user id = GymUser; password=Pass.00*;pooling=False;MultipleActiveResultSets=True;App=EntityFramework'");
-       
+
+        List<Client> clients = new List<Client>();
+        //List<DBLibrary.Type> types = new List<DBLibrary.Type>();
         public Client()
         {
             InitializeComponent();
@@ -32,5 +34,7 @@ namespace GymInductionUI
         {
            
         }
+
+       
     }
 }

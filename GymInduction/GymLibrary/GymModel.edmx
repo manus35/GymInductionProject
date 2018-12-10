@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="GymDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="GymDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AccessLevel">
           <Key>
             <PropertyRef Name="LevelId" />
@@ -46,23 +46,16 @@
           <Property Name="Date" Type="date" Nullable="false" />
           <Property Name="Time" Type="time" Precision="7" Nullable="false" />
           <Property Name="ClientId" Type="int" Nullable="false" />
+          <Property Name="Status" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="InstructorId" Type="int" Nullable="false" />
-          <Property Name="StatusId" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="InductionStatus">
-          <Key>
-            <PropertyRef Name="StatusId" />
-          </Key>
-          <Property Name="StatusId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="StatusType" Type="varchar" MaxLength="30" Nullable="false" />
         </EntityType>
         <EntityType Name="Instructor">
           <Key>
             <PropertyRef Name="InstructorId" />
           </Key>
           <Property Name="InstructorId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="FirstName" Type="varchar" MaxLength="30" Nullable="false" />
-          <Property Name="LastName" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="FName" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="LName" Type="nchar" MaxLength="30" Nullable="false" />
         </EntityType>
         <EntityType Name="Log">
           <Key>
@@ -121,18 +114,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Induction_ToInductionStatus">
-          <End Role="InductionStatus" Type="Self.InductionStatus" Multiplicity="1" />
-          <End Role="Induction" Type="Self.Induction" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="InductionStatus">
-              <PropertyRef Name="StatusId" />
-            </Principal>
-            <Dependent Role="Induction">
-              <PropertyRef Name="StatusId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Induction_ToInstructor">
           <End Role="Instructor" Type="Self.Instructor" Multiplicity="1" />
           <End Role="Induction" Type="Self.Induction" Multiplicity="*" />
@@ -174,7 +155,6 @@
           <EntitySet Name="Client" EntityType="Self.Client" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Evaluation" EntityType="Self.Evaluation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Induction" EntityType="Self.Induction" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="InductionStatus" EntityType="Self.InductionStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Instructor" EntityType="Self.Instructor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
@@ -190,10 +170,6 @@
             <End Role="Client" EntitySet="Client" />
             <End Role="Induction" EntitySet="Induction" />
           </AssociationSet>
-          <AssociationSet Name="FK_Induction_ToInductionStatus" Association="Self.FK_Induction_ToInductionStatus">
-            <End Role="InductionStatus" EntitySet="InductionStatus" />
-            <End Role="Induction" EntitySet="Induction" />
-          </AssociationSet>
           <AssociationSet Name="FK_Induction_ToInstructor" Association="Self.FK_Induction_ToInstructor">
             <End Role="Instructor" EntitySet="Instructor" />
             <End Role="Induction" EntitySet="Induction" />
@@ -207,8 +183,7 @@
             <End Role="User" EntitySet="User" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="GymDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -258,29 +233,20 @@
           <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Time" Type="Time" Nullable="false" Precision="7" />
           <Property Name="ClientId" Type="Int32" Nullable="false" />
-          <Property Name="InstructorId" Type="Int32" Nullable="false" />
-          <Property Name="StatusId" Type="Int32" Nullable="false" />
+          <Property Name="InstructorId" Nullable="false" Type="Int32" />
           <NavigationProperty Name="Client" Relationship="Self.FK_Induction_ToClient" FromRole="Induction" ToRole="Client" />
-          <NavigationProperty Name="InductionStatu" Relationship="Self.FK_Induction_ToInductionStatus" FromRole="Induction" ToRole="InductionStatus" />
           <NavigationProperty Name="Instructor" Relationship="Self.FK_Induction_ToInstructor" FromRole="Induction" ToRole="Instructor" />
-        </EntityType>
-        <EntityType Name="InductionStatu">
-          <Key>
-            <PropertyRef Name="StatusId" />
-          </Key>
-          <Property Name="StatusId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="StatusType" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Inductions" Relationship="Self.FK_Induction_ToInductionStatus" FromRole="InductionStatus" ToRole="Induction" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Instructor">
           <Key>
             <PropertyRef Name="InstructorId" />
           </Key>
-          <Property Name="InstructorId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FirstName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="LastName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="InstructorId" Nullable="false" annotation:StoreGeneratedPattern="Identity" Type="Int32" />
           <NavigationProperty Name="Evaluations" Relationship="Self.FK_Evaluation_ToInstructor" FromRole="Instructor" ToRole="Evaluation" />
           <NavigationProperty Name="Inductions" Relationship="Self.FK_Induction_ToInstructor" FromRole="Instructor" ToRole="Induction" />
+          <Property Name="FName" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="LName" Type="String" Nullable="false" MaxLength="30" FixedLength="true" Unicode="true" />
         </EntityType>
         <EntityType Name="Log">
           <Key>
@@ -343,8 +309,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Evaluation_ToInstructor">
-          <End Role="Instructor" Type="Self.Instructor" Multiplicity="1" />
-          <End Role="Evaluation" Type="Self.Evaluation" Multiplicity="*" />
+          <End Type="Self.Instructor" Multiplicity="1" Role="Instructor" />
+          <End Type="Self.Evaluation" Multiplicity="*" Role="Evaluation" />
           <ReferentialConstraint>
             <Principal Role="Instructor">
               <PropertyRef Name="InstructorId" />
@@ -354,21 +320,9 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Induction_ToInductionStatus">
-          <End Role="InductionStatus" Type="Self.InductionStatu" Multiplicity="1" />
-          <End Role="Induction" Type="Self.Induction" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="InductionStatus">
-              <PropertyRef Name="StatusId" />
-            </Principal>
-            <Dependent Role="Induction">
-              <PropertyRef Name="StatusId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Induction_ToInstructor">
-          <End Role="Instructor" Type="Self.Instructor" Multiplicity="1" />
-          <End Role="Induction" Type="Self.Induction" Multiplicity="*" />
+          <End Type="Self.Instructor" Multiplicity="1" Role="Instructor" />
+          <End Type="Self.Induction" Multiplicity="*" Role="Induction" />
           <ReferentialConstraint>
             <Principal Role="Instructor">
               <PropertyRef Name="InstructorId" />
@@ -395,7 +349,6 @@
           <EntitySet Name="Clients" EntityType="Self.Client" />
           <EntitySet Name="Evaluations" EntityType="Self.Evaluation" />
           <EntitySet Name="Inductions" EntityType="Self.Induction" />
-          <EntitySet Name="InductionStatus" EntityType="Self.InductionStatu" />
           <EntitySet Name="Instructors" EntityType="Self.Instructor" />
           <EntitySet Name="Logs" EntityType="Self.Log" />
           <EntitySet Name="Users" EntityType="Self.User" />
@@ -412,16 +365,12 @@
             <End Role="Induction" EntitySet="Inductions" />
           </AssociationSet>
           <AssociationSet Name="FK_Evaluation_ToInstructor" Association="Self.FK_Evaluation_ToInstructor">
-            <End Role="Instructor" EntitySet="Instructors" />
-            <End Role="Evaluation" EntitySet="Evaluations" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Induction_ToInductionStatus" Association="Self.FK_Induction_ToInductionStatus">
-            <End Role="InductionStatus" EntitySet="InductionStatus" />
-            <End Role="Induction" EntitySet="Inductions" />
+            <End EntitySet="Instructors" Role="Instructor" />
+            <End EntitySet="Evaluations" Role="Evaluation" />
           </AssociationSet>
           <AssociationSet Name="FK_Induction_ToInstructor" Association="Self.FK_Induction_ToInstructor">
-            <End Role="Instructor" EntitySet="Instructors" />
-            <End Role="Induction" EntitySet="Inductions" />
+            <End EntitySet="Instructors" Role="Instructor" />
+            <End EntitySet="Inductions" Role="Induction" />
           </AssociationSet>
           <AssociationSet Name="FK_Log_ToUser" Association="Self.FK_Log_ToUser">
             <End Role="User" EntitySet="Users" />
@@ -473,30 +422,22 @@
           <EntitySetMapping Name="Inductions">
             <EntityTypeMapping TypeName="GymDbModel.Induction">
               <MappingFragment StoreEntitySet="Induction">
+                <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="InductionId" ColumnName="InductionId" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="Time" ColumnName="Time" />
                 <ScalarProperty Name="ClientId" ColumnName="ClientId" />
                 <ScalarProperty Name="InstructorId" ColumnName="InstructorId" />
-                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="InductionStatus">
-            <EntityTypeMapping TypeName="GymDbModel.InductionStatu">
-              <MappingFragment StoreEntitySet="InductionStatus">
-                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
-                <ScalarProperty Name="StatusType" ColumnName="StatusType" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Instructors">
             <EntityTypeMapping TypeName="GymDbModel.Instructor">
               <MappingFragment StoreEntitySet="Instructor">
+                <ScalarProperty Name="LName" ColumnName="LName" />
+                <ScalarProperty Name="FName" ColumnName="FName" />
                 <ScalarProperty Name="InstructorId" ColumnName="InstructorId" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-              </MappingFragment>
+                </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Logs">

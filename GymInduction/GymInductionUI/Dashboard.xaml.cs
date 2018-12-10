@@ -20,10 +20,17 @@ namespace GymInductionUI
     /// </summary>
     public partial class Dashboard : Window
     {
+
+        GymDbEntities db = new GymDbEntities("metadata=res://*/GymModel.csdl|res://*/GymModel.ssdl|res://*/GymModel.msl;provider = System.Data.SqlClient; provider connection string='data source = 192.168.1.110; initial catalog = GymDb; user id = GymUser; password=Pass.00*;pooling=False;MultipleActiveResultSets=True;App=EntityFramework'");
+        List<GymLibrary.Client> clients = new List<GymLibrary.Client>();
+        List<Induction> inductions = new List<Induction>();
+        List<Instructor> instructors = new List<Instructor>();
         public User user = new User();
+        
         public Client client = new Client();
         public Evaluation evaluation = new Evaluation();
         public Induction induction = new Induction();
+
 
         public Dashboard()
         {
@@ -32,8 +39,17 @@ namespace GymInductionUI
 
         private void btnAdmin_Click(object sender, RoutedEventArgs e)
         {
-            Admin admin = new Admin();
-            frmMain.Navigate(admin);
+            if (user.LevelId == 3)
+            {
+                Search search = new Search(user);
+                frmMain.Navigate(search);
+                //add method
+            }
+            else
+            {
+                Admin admin = new Admin();
+                frmMain.Navigate(admin);
+            }
         }
 
         private void btnExit_Click(object sender, RoutedEventArgs e)
@@ -44,9 +60,10 @@ namespace GymInductionUI
 
         private void btnClient_Click(object sender, RoutedEventArgs e)
         {
-            Client client = new Client();
-            
-            client.Show();
+            ClientUC client = new ClientUC();
+            frmMain.Navigate(client);
+
+
         }
 
         private void btnSearch_Click(object sender, RoutedEventArgs e)
@@ -75,6 +92,11 @@ namespace GymInductionUI
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             checkUserAccess(user);
+        }
+
+        private void getInstructorScheduleDetails()
+        {
+           
         }
     }
 }

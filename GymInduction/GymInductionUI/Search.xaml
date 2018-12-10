@@ -23,35 +23,36 @@
             <ColumnDefinition Width="50*"/>
         </Grid.ColumnDefinitions>
 
-        
+
 
         <DockPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="6,10,6,0">
-            
 
-                <Frame Name="frmMain" />
 
-            
+            <Frame Name="frmMain" />
+
+
 
         </DockPanel>
 
 
         <TabControl Name="tbcClientDetails" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="6,10,6,0">
-            <TabItem Header="Client Details" Name="tbiClientDetails">
+            <TabItem Header="Client Induction Details" Name="tbiClientDetails">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="24*"/>
-                        <ColumnDefinition Width="9*"/>
-                        <ColumnDefinition Width="761*"/>
+                        <ColumnDefinition Width="50*"/>
+                        <ColumnDefinition Width="50*"/>
+
                     </Grid.ColumnDefinitions>
                     <Grid.Background>
                         <ImageBrush ImageSource="images/dashback.jpg" Stretch="UniformToFill" Opacity=".04"></ImageBrush>
                     </Grid.Background>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="50*"/>
-                        <RowDefinition Height="50*"/>
+                        <RowDefinition Height="103*"/>
+                        <RowDefinition Height="76*"/>
+                        <RowDefinition Height="27*"/>
                     </Grid.RowDefinitions>
 
-                    <ListView Name="lstClientDetails" Grid.Row="0" Grid.ColumnSpan="3">
+                    <ListView Name="lstClientDetails" Grid.Row="0" Grid.ColumnSpan="2">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="First Name"  Width="150">
@@ -93,15 +94,49 @@
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
+                                <GridViewColumn Header="Induction Date"  Width="150">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock HorizontalAlignment="Stretch" Name="tbxDate" TextWrapping="Wrap" Text="{Binding indDate}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
 
-
+                                <GridViewColumn Header="Induction Time"  Width="100">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="{Binding indTime}"  />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Status"  Width="150">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="{Binding indStatus}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Instructor First Name"  Width="150">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="{Binding insFname}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Instructor Last Name"  Width="150">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="{Binding insLname}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
 
                             </GridView>
                         </ListView.View>
                         <ListView.ContextMenu>
                             <ContextMenu Name="mnuUserListOverview" IsEnabled="True">
                                 <ContextMenu.Items>
-                                   
+
                                     <MenuItem Header="Modify current Client" Name="submenuModUser" IsEnabled="False">
                                         <MenuItem.Icon>
                                             <Image Source="images/edit.png"  />
@@ -120,64 +155,33 @@
 
                     </ListView>
 
-                    <ListView Name="lstInductionDetails" Grid.Row="2" Grid.Column="2">
+                    <ListView Name="lstInductionDetails" Grid.Row="2" Grid.Column="0" Grid.RowSpan="2">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="Induction Date"  Width="150">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock HorizontalAlignment="Stretch" Name="tbxDate" TextWrapping="Wrap" Text="{Binding Date}" />
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-
-                                <GridViewColumn Header="Induction Time"  Width="150">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="{Binding Time}"  />
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="Instructor First Name"  Width="150">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap"  Text="{Binding FirstName}" />
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="Instructor Last Name"  Width="150">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="{Binding LastName}" />
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="Status"  Width="150">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="{Binding StatusType}" />
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-
-
-
-
+                               
                             </GridView>
                         </ListView.View>
-
                     </ListView>
+                    
+
+
+
+
+
+
 
 
 
                 </Grid>
+
             </TabItem>
             <TabItem Header="Evaluation Details" Name="tbiEvaluationDetails">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="24*"/>
                         <ColumnDefinition Width="9*"/>
-                        <ColumnDefinition Width="761*"/>
+                        <ColumnDefinition Width="21*"/>
+                        <ColumnDefinition Width="728*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.Background>
                         <ImageBrush ImageSource="images/dashback.jpg" Stretch="UniformToFill" Opacity=".04"></ImageBrush>
@@ -187,7 +191,7 @@
                         <RowDefinition Height="50*"/>
                     </Grid.RowDefinitions>
 
-                    <ListView Name="lstEvaluationDetails" Grid.Row="0" Grid.ColumnSpan="3">
+                    <ListView Name="lstEvaluationDetails" Grid.Row="0" Grid.ColumnSpan="4">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Height"  Width="150">
@@ -237,7 +241,7 @@
 
                     </ListView>
 
-                    <ListView Name="lstEvaluationDetails2" Grid.Row="2" Grid.Column="2">
+                    <ListView Name="lstEvaluationDetails2" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Induction Date"  Width="150">
@@ -262,7 +266,7 @@
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                               
+
                             </GridView>
                         </ListView.View>
 

@@ -77,9 +77,6 @@
     <Compile Include="Induction.cs">
       <DependentUpon>GymModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="InductionStatu.cs">
-      <DependentUpon>GymModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Instructor.cs">
       <DependentUpon>GymModel.tt</DependentUpon>
     </Compile>
@@ -101,6 +98,7 @@
     <None Include="App.Config" />
     <None Include="GymModel.edmx.diagram">
       <DependentUpon>GymModel.edmx</DependentUpon>
+      <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
   </ItemGroup>

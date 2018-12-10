@@ -19,10 +19,17 @@ namespace GymLibrary
         public System.TimeSpan Time { get; set; }
         public int ClientId { get; set; }
         public int InstructorId { get; set; }
-        public int StatusId { get; set; }
-    
+        public string Status { get; set; }
+
+        public string ApointmentDetails
+        {
+            get
+            {
+                return $"{Date} {Time}";
+            }
+        }
+
         public virtual Client Client { get; set; }
-        public virtual InductionStatu InductionStatu { get; set; }
         public virtual Instructor Instructor { get; set; }
     }
 }
