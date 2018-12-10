@@ -556,7 +556,16 @@ namespace GymInductionUI
             }
 
         }
-
+        /// <summary>
+        /// Links and joins tables from the db for listviews
+        /// </summary>
+        /// <param name="inductionId">
+        /// id of induction holds clientid and instructorid
+        /// </param>
+        
+        /// <returns>
+        /// void sets textboxes of client,induction,evaluation tabs
+        /// </returns>
         private void populateClientTabs(int inductionId)
         {
             var allClientInfo = from _induction in db.Inductions.Where(t => t.InductionId == inductionId)
@@ -1110,7 +1119,20 @@ namespace GymInductionUI
             }
         }
 
-        //BMI = weightInPounds x 703 / heightInInches x heightInInches
+
+        /// <summary>
+        /// calculates BMI of client and is used to save directly to the DB
+        /// BMI = weightInPounds x 703 / heightInInches x heightInInches
+        /// </summary>
+        /// <param name="height">
+        /// Height of the client in feet and inches
+        /// </param>
+        /// <param name="weight">
+        /// Wweight of the client in KG
+        /// </param>
+        /// <returns>
+        /// BMI of client
+        /// </returns>
         private double calculateBMI(double height,double weight)
         {
             double heightInInches = height * 12;
