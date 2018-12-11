@@ -27,20 +27,36 @@ namespace GymInductionUI
         GymDbEntities db = new GymDbEntities("metadata=res://*/GymModel.csdl|res://*/GymModel.ssdl|res://*/GymModel.msl;provider = System.Data.SqlClient; provider connection string='data source = 192.168.1.110; initial catalog = GymDb; user id = GymUser; password=Pass.00*;pooling=False;MultipleActiveResultSets=True;App=EntityFramework'");
         List<User> users = new List<User>();
         List<Log> logs = new List<Log>();
+        List<GymLibrary.Client> clients = new List<GymLibrary.Client>();
         List<Evaluation> evaluations = new List<Evaluation>();
         User selectedUser = new User();
         float avgHr = 0;
         double avgHeight = 0;
         double avgWeight = 0;
         float avgAge = 0;
-        
+
         int pendInductions = 0;
         int avgCount = 0;
 
         enum DBOperation
         {
-            Add,Modify,Delete
+            Add, Modify, Delete
         }
+
+        enum AnalysisType
+        {
+            Summary, Count, Statistics
+        }
+
+        private AnalysisType analysisType = new AnalysisType();
+
+        enum TableSelected
+        {
+            User, Client, Log
+        }
+
+        private TableSelected tableSelected = new TableSelected();
+
         DBOperation dbOperation = new DBOperation();
         public Admin()
         {
@@ -119,10 +135,15 @@ namespace GymInductionUI
         {
             refreshUserList();
             lstLogs.ItemsSource = logs;
-            
+
             foreach (var log in db.Logs)
             {
                 logs.Add(log);
+            }
+
+            foreach (var client in db.Clients)
+            {
+                clients.Add(client);
             }
             foreach (var evaluation in db.Evaluations)
             {
@@ -130,10 +151,10 @@ namespace GymInductionUI
                 avgCount++;
                 avgHeight = avgHeight + evaluation.Height;
                 avgWeight = avgWeight + evaluation.Weight;
-                
+
             }
-            int avgAsInt = Convert.ToInt32(avgHr/avgCount);
-            txbAvgHR.Text ="The average Heart Rate of all inductees is: "+ avgAsInt.ToString();
+            //int avgAsInt = Convert.ToInt32(avgHr/avgCount);
+            //txbAvgHR.Text ="The average Heart Rate of all inductees is: "+ avgAsInt.ToString();
         }
 
         private void refreshUserList()
@@ -153,12 +174,12 @@ namespace GymInductionUI
             tbxLastName.Text = " ";
             tbxPassword.Text = " ";
             tbxUsername.Text = " ";
-            cmbAccessLevel.SelectedIndex=0;
+            cmbAccessLevel.SelectedIndex = 0;
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
-        
+
         }
 
         private void lstUsers_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -181,7 +202,7 @@ namespace GymInductionUI
                     tbxPassword.Text = selectedUser.Password;
                     cmbAccessLevel.SelectedIndex = selectedUser.LevelId;
                 }
-    
+
             }
 
         }
@@ -214,8 +235,124 @@ namespace GymInductionUI
             {
                 MessageBox.Show("Problem Deleting User record.", "Delete Database", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
-            
-            
+
+
+        }
+
+        private void cboAnalysis_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //check which option is selected greater than 0 are valid
+            if (cboAnalysis.SelectedIndex > 0)
+            {
+                if (cboAnalysis.SelectedIndex == 1)
+                {
+                    analysisType = AnalysisType.Summary;
+                }
+                if (cboAnalysis.SelectedIndex == 2)
+                {
+                    analysisType = AnalysisType.Count;
+                }
+                if (cboAnalysis.SelectedIndex == 3)
+                {
+                    analysisType = AnalysisType.Statistics;
+                }
+            }
+
+        }
+
+        private void cboChoose_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //check which option is selected greater than 0 are valid
+            if (cboChoose.SelectedIndex > 0)
+            {
+                if (cboChoose.SelectedIndex == 1)
+                {
+                    tableSelected = TableSelected.Client;
+                }
+                if (cboChoose.SelectedIndex == 2)
+                {
+                    tableSelected = TableSelected.User;
+                }
+                if (cboChoose.SelectedIndex == 3)
+                {
+                    tableSelected = TableSelected.Log;
+                }
+            }
+        }
+
+        private void btnAnalyse_Click(object sender, RoutedEventArgs e)
+        {
+            //Clear all vars before use
+            int recordCount = 0;
+            string output = "";
+            tbkAnalysis.Text = "";
+            if (analysisType == AnalysisType.Summary && tableSelected == TableSelected.Client)
+            {
+                foreach (var client in clients)
+                {
+                    recordCount++;
+                    output = output + Environment.NewLine + $"Record {recordCount} is for Client" +
+                        $" named {client.FirstName} {client.LastName}  " + Environment.NewLine;
+                }
+                output = output + Environment.NewLine + $"Total Client  Records in the Database  is {recordCount}" + Environment.NewLine;
+                tbkAnalysis.Text = output;
+            }
+
+            if (analysisType == AnalysisType.Summary && tableSelected == TableSelected.User)
+            {
+                int level1Count = 0;
+                int level2Count = 0;
+                int level3Count = 0;
+                int level4Count = 0;
+                foreach (var user in users)
+                {
+                    recordCount++;
+                    output = output + Environment.NewLine + $"Record {recordCount} is for User " +
+                        $"whos name is {user.FirstName} {user.LastName} " +
+                        $" with Username {user.Username} and Access Level {user.LevelId}, User role" +
+                        $" is {user.AccessLevel.UserType}  " + Environment.NewLine;
+
+                    if (user.LevelId == 1)
+                    {
+                        level1Count++;
+                    }
+                    if (user.LevelId == 2)
+                    {
+                        level2Count++;
+                    }
+                    if (user.LevelId == 3)
+                    {
+                        level3Count++;
+                    }
+                    if (user.LevelId == 4)
+                    {
+                        level4Count++;
+                    }
+                }
+
+                output = output + Environment.NewLine + $"Total Users  with Level 1 Access is {level1Count}." + Environment.NewLine;
+                output = output + Environment.NewLine + $"Total Users  with Level 2 Access is {level2Count}." + Environment.NewLine;
+                output = output + Environment.NewLine + $"Total Users  with Level 3 Access is {level3Count}." + Environment.NewLine;
+                output = output + Environment.NewLine + $"Total Users  with Level 4 Access is {level4Count}." + Environment.NewLine;
+                output = output + Environment.NewLine + $"Total Users  in the Database is  {recordCount}." + Environment.NewLine;
+                tbkAnalysis.Text = output;
+            }
+
+            if (analysisType == AnalysisType.Summary && tableSelected == TableSelected.Log)
+            {
+                foreach (var log in logs)
+                {
+                    recordCount++;
+                    output = output + Environment.NewLine + $"Record {recordCount} is for Log created by {log.User.FirstName} {log.User.LastName} " +
+                        $"whose UserId is {log.UserId}, " + Environment.NewLine +
+                        $"log was created on  {log.Date} " + Environment.NewLine +
+                        $" Log is registered for the category of {log.Category}" +
+                        $" with description of {log.Description} " + Environment.NewLine;
+
+                }
+                output = output + Environment.NewLine + $"Total Logs  in the Database is  {recordCount}." + Environment.NewLine;
+                tbkAnalysis.Text = output;
+            }
         }
     }
 }

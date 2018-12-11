@@ -168,11 +168,9 @@
 
                 <TabItem Header="Analytics" Name="tbiAnalytics">
                     <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="50*"/>
-                            <ColumnDefinition Width="50*"/>
+                        
                             
-                        </Grid.ColumnDefinitions>
+        
                         <Grid.Background>
                             <ImageBrush ImageSource="images/dashback.jpg" Stretch="UniformToFill" Opacity=".04"></ImageBrush>
                         </Grid.Background>
@@ -181,13 +179,53 @@
                             <RowDefinition Height="50*"/>
                         </Grid.RowDefinitions>
 
-                        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Left" Margin="0,10">
-                            <Label Content="_Average Heart Rate:"  Width="300" Name="lblAvgHeartRate" HorizontalAlignment="Center" />
-                            <TextBox Name="txbAvgHR" IsReadOnly ="True" Width="300"/>
-                            <Label Content="_Mail:" Target="{Binding ElementName=txtMail}" Width="200" />
-                            <TextBox Name="txtMail" />
-                        </StackPanel>
+                        <!--Row 0 -->
+                        <ScrollViewer Grid.Row="0" Margin="10" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                            <TextBlock Name="tbkAnalysis" TextWrapping="Wrap" FontSize="16" />
+                        </ScrollViewer>
+
+                        <!--   row 1-->
+                        <StackPanel Grid.Row="2" VerticalAlignment="Center">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="1*"/>
+                                    <RowDefinition Height="1*"/>
+                                    <RowDefinition Height="1*"/>
+                                </Grid.RowDefinitions>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- row 0 stackpanel   -->
+                                <Label Grid.Row="0" Content="Please choose analysis type" HorizontalAlignment="Center" FontSize="16" />
+                                <Label Grid.Row="0" Grid.Column="1" Content="Please choose Database Table" HorizontalAlignment="Center" FontSize="16" />
+
+                                <!-- row 1 of stackpanel   -->
+                                <ComboBox Name="cboAnalysis" Grid.Row ="1" Grid.Column="0" Width="150" Height="26" Margin="0,10" SelectedIndex="0" SelectionChanged="cboAnalysis_SelectionChanged">
+                                    <ComboBoxItem Content="Please Select" />
+                                <ComboBoxItem Content="Summary" />
+                                <ComboBoxItem Content="Count" />
+                                    <ComboBoxItem Content="Statistics" />
+                                </ComboBox>
+
+                                <ComboBox Name="cboChoose" Grid.Row ="1" Grid.Column="1" Width="150" Height="26" Margin="0,10" SelectedIndex="0" SelectionChanged="cboChoose_SelectionChanged">
+                                    <ComboBoxItem Content="Please Select" />
+                                    <ComboBoxItem Content="Client" />
+                                    <ComboBoxItem Content="User" />
+                                    <ComboBoxItem Content="Log" />
+                                </ComboBox>
+
+                                <!-- row 2 of stackpanel   -->
+                                <Button Name="btnAnalyse" Grid.Row="2" Grid.Column="1" Height="26" Width="150" Content="Analyse" Background="LightGreen" Click="btnAnalyse_Click" />
+
+
+                            </Grid>
                             
+                        </StackPanel> 
+                        
+
 
 
 
