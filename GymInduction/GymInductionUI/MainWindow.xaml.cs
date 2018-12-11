@@ -53,14 +53,14 @@ namespace GymInductionUI
                 else
                 {
                     MessageBox.Show("The credentials you entered do not exist on the Database. Please check and try again.","User Login",MessageBoxButton.OK,MessageBoxImage.Error);
-                    //CreateLogEntry("Login", "User login Unsuccessful", 0, "Credentials: "+currentUser+"/"+currentPassword);
+                    CreateLogEntry("Login", "User login Unsuccessful", 0, "Credentials: "+currentUser+"/"+currentPassword);
                 }
                 
             }
             else
             {
                 MessageBox.Show("Invalid Username or Password. Please check and try again.", "User Login", MessageBoxButton.OK, MessageBoxImage.Error);
-                //CreateLogEntry("Login", "User login Unsuccessful", 0, "Credentials: " + currentUser + "/" + currentPassword);
+                CreateLogEntry("Login", "User login Unsuccessful", 0, "Credentials: " + currentUser + "/" + currentPassword);
             }
            
            
@@ -72,6 +72,14 @@ namespace GymInductionUI
         {
             string comment = $"{description} user credentials  = {username}";
             Log log = new Log();
+            if (userId > 0)
+            { 
+            log.UserId = userId;
+            }
+            log.Category = category;
+            log.Description = comment;
+            log.Date = DateTime.Now;
+            saveLog(log);
             if (userId > 0)
             { 
             log.UserId = userId;

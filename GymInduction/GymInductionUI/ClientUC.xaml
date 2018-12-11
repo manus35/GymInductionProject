@@ -21,7 +21,7 @@
                     </Style>
                 </TabControl.Resources>
 
-                <TabItem Header="Client" Name="tbiClient">
+                <TabItem Header="Client" Name="tbiClient" IsEnabled="true">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="97*"/>
@@ -87,19 +87,19 @@
                             </ListView.View>
 
                             <ListView.ContextMenu>
-                                <ContextMenu Name="mnuClientListOverview" IsEnabled="True" >
+                                <ContextMenu Name="mnuClientListOverview"  IsEnabled="True" >
                                     <ContextMenu.Items>
                                         <MenuItem Header="Add New Client"   Name="submenuAddClient" IsEnabled="True" Click="submenuAddClient_Click">
                                             <MenuItem.Icon>
                                                 <Image Source="images/add.png" />
                                             </MenuItem.Icon>
                                         </MenuItem>
-                                        <MenuItem Header="Modify selected Client" Name="submenuModClient" IsEnabled="False" Click="submenuModClient_Click">
+                                        <MenuItem Header="Modify selected Client" Name="submenuModClient" IsEnabled="True" Click="submenuModClient_Click">
                                             <MenuItem.Icon>
                                                 <Image Source="images/edit.png"  />
                                             </MenuItem.Icon>
                                         </MenuItem>
-                                        <MenuItem Header="Delete selected Client" Name="submenuDelClient" IsEnabled="False" Click="submenuDelClient_Click">
+                                        <MenuItem Header="Delete selected Client" Name="submenuDelClient" IsEnabled="True" Click="submenuDelClient_Click">
                                             <MenuItem.Icon>
                                                 <Image Source="images/delete.png"  />
                                             </MenuItem.Icon>
@@ -280,12 +280,12 @@
                                                 <Image Source="images/add.png" />
                                             </MenuItem.Icon>
                                         </MenuItem>
-                                        <MenuItem Header="Modify selected Induction" Name="submenuModInd" IsEnabled="False" Click="submenuModInd_Click">
+                                        <MenuItem Header="Modify selected Induction" Name="submenuModInd" IsEnabled="True" Click="submenuModInd_Click">
                                             <MenuItem.Icon>
                                                 <Image Source="images/edit.png"  />
                                             </MenuItem.Icon>
                                         </MenuItem>
-                                        <MenuItem Header="Delete selected Induction" Name="submenuDelInd" IsEnabled="False" Click="submenuDelInd_Click">
+                                        <MenuItem Header="Delete selected Induction" Name="submenuDelInd" IsEnabled="True" Click="submenuDelInd_Click">
                                             <MenuItem.Icon>
                                                 <Image Source="images/delete.png"  />
                                             </MenuItem.Icon>

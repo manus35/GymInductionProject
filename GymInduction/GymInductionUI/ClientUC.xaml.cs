@@ -33,6 +33,7 @@ namespace GymInductionUI
         //instance variables
         bool isValidated,validated;
         GymLibrary.Client selectedClient = new GymLibrary.Client();
+        GymLibrary.User currentUser = new GymLibrary.User();
         GymLibrary.Induction selectedInduction = new GymLibrary.Induction();
         GymLibrary.Evaluation selectedEvaluation = new GymLibrary.Evaluation();
         List<GymLibrary.Client> clients = new List<GymLibrary.Client>();
@@ -46,8 +47,10 @@ namespace GymInductionUI
             AddClient,AddInduction,AddEvaluation, ModifyClient,ModifyInduction,ModifyEvaluation
         }
         DBOperation dbOperation = new DBOperation();
-        public ClientUC()
+        public ClientUC(User user)
         {
+            this.currentUser = user;
+            MessageBox.Show(currentUser.LevelId.ToString());
             InitializeComponent();
         }
 
@@ -260,8 +263,10 @@ namespace GymInductionUI
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            
             refreshListViews();
             refreshInstructorList();
+
         }
 
         public bool validateClientInput()
@@ -433,8 +438,8 @@ namespace GymInductionUI
         {
             stkClientDetails.Visibility = Visibility.Visible;
             //stkEvaluationDetails.Visibility = Visibility.Visible;
-            tbiInduction.IsEnabled = true;
-            tbiEvaluation.IsEnabled = true;
+            
+            checkUserAccess(currentUser);
             dbOperation = DBOperation.AddClient;
             clearAllTextFields();
         }
@@ -442,6 +447,7 @@ namespace GymInductionUI
         private void submenuModClient_Click(object sender, RoutedEventArgs e)
         {
             stkClientDetails.Visibility = Visibility.Visible;
+            checkUserAccess(currentUser);
             //stkEvaluationDetails.Visibility = Visibility.Visible;
             selectedClient = clients.ElementAt(lstClientDetails.SelectedIndex);
             dbOperation = DBOperation.ModifyClient;
@@ -501,9 +507,8 @@ namespace GymInductionUI
         {
            
                 cmbEvlInsId.Items.Refresh();
-                submenuDelEvaluation.IsEnabled = true;
-                submenuModEvaluation.IsEnabled = true;
-                if (lstEvaluationDetails.SelectedIndex > 0)
+            checkUserAccess(currentUser);
+            if (lstEvaluationDetails.SelectedIndex > 0)
                 {
                     selectedEvaluation = evaluations.ElementAt(lstEvaluationDetails.SelectedIndex);
 
@@ -533,8 +538,8 @@ namespace GymInductionUI
 
         private void lstClientDetails_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            submenuModClient.IsEnabled = true;
-            submenuDelClient.IsEnabled = true;
+            
+            checkUserAccess(currentUser);
             if (lstClientDetails.SelectedIndex > 0)
             {
                 selectedClient = clients.ElementAt(lstClientDetails.SelectedIndex);
@@ -654,9 +659,9 @@ namespace GymInductionUI
         {
             cmbIndInsId.Items.Refresh();
             stkIndDetails.Visibility = Visibility.Visible;
-            
-            tbiInduction.IsEnabled = true;
-           // tbiEvaluation.IsEnabled = true;
+
+            checkUserAccess(currentUser);
+            // tbiEvaluation.IsEnabled = true;
             dbOperation = DBOperation.AddInduction;
             clearAllTextFields();
         }
@@ -1093,8 +1098,7 @@ namespace GymInductionUI
         private void lstIndtDetails_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             cmbIndInsId.Items.Refresh();
-            submenuModInd.IsEnabled = true;
-            submenuDelInd.IsEnabled = true;
+            checkUserAccess(currentUser);
             if (lstIndDetails.SelectedIndex > 0)
             {
                 selectedInduction = inductions.ElementAt(lstIndDetails.SelectedIndex);
@@ -1140,6 +1144,36 @@ namespace GymInductionUI
             double bmi = Math.Round((weightInpounds *703) / (heightInInches* heightInInches),1);
             return bmi;
         }
+
+        //check user permisions and apply 
+        private void checkUserAccess(User user)
+        {
+            if (user.LevelId == 1)
+            {
+
+                tbiInduction.IsEnabled = false;
+                submenuAddClient.IsEnabled = false;
+                submenuDelClient.IsEnabled = false;
+                submenuModClient.IsEnabled = false;
+                submenuSchedule.IsEnabled = false;
+                submenuAddInd.IsEnabled = false;
+                
+
+            }
+            if (user.LevelId == 2)
+            {
+                tbiEvaluation.IsEnabled = false;
+                submenuEvaluation.IsEnabled = false;
+            }
+            if (user.LevelId == 3)
+            {
+                submenuAddClient.IsEnabled = false;
+                submenuDelClient.IsEnabled = false;
+                submenuModClient.IsEnabled = false;
+            }
+        }
+
+
     }
            
             }

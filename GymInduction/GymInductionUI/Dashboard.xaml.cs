@@ -60,7 +60,7 @@ namespace GymInductionUI
 
         private void btnClient_Click(object sender, RoutedEventArgs e)
         {
-            ClientUC client = new ClientUC();
+            ClientUC client = new ClientUC(user);
             frmMain.Navigate(client);
 
 
@@ -83,10 +83,7 @@ namespace GymInductionUI
                 btnAdmin.Content = "Schedule";
                 btnAdmin.Visibility = Visibility.Visible;
             }
-            if (user.LevelId == 1)
-            {
-                btnClient.Visibility = Visibility.Hidden;
-            }
+            
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
