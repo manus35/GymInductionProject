@@ -23,7 +23,7 @@ namespace GymInductionUI
     public partial class MainWindow : Window
     {
         GymDbEntities db = new GymDbEntities("metadata=res://*/GymModel.csdl|res://*/GymModel.ssdl|res://*/GymModel.msl;provider = System.Data.SqlClient; provider connection string='data source = 192.168.1.110; initial catalog = GymDb; user id = GymUser; password=Pass.00*;pooling=False;MultipleActiveResultSets=True;App=EntityFramework'");
-
+        LoginProcess loginProcess = new LoginProcess();
         public MainWindow()
         {
             InitializeComponent();
@@ -36,7 +36,7 @@ namespace GymInductionUI
             bool validCredentials = false;
             String currentUser = tbxUsername.Text;
             String currentPassword = tbxPassword.Password;
-            validCredentials = ValidateUserInput(currentUser, currentPassword);
+            validCredentials = loginProcess.ValidateUserInput(currentUser, currentPassword);
             if (validCredentials)
             {
                 validatedUser = getUserRecord(currentUser,currentPassword);
@@ -68,9 +68,17 @@ namespace GymInductionUI
 
         }
 
-        private void CreateLogEntry(String category, String description, int userId, String username)
+        public void CreateLogEntry(String category, String description, int userId, String username)
         {
-            string comment = $"{description} user credentials  = {username}";
+            string comment = "";
+            if (userId > 0)
+            {
+                comment = $"{description} user credentials  = {username}";
+            }
+            else
+            {
+                comment = "User login unsuccessful";
+            }
             Log log = new Log();
             if (userId > 0)
             { 
@@ -80,6 +88,7 @@ namespace GymInductionUI
             log.Description = comment;
             log.Date = DateTime.Now;
             saveLog(log);
+            /*
             if (userId > 0)
             { 
             log.UserId = userId;
@@ -88,12 +97,20 @@ namespace GymInductionUI
             log.Description = comment;
             log.Date = DateTime.Now;
             saveLog(log);
+            */
         }
 
-        private void saveLog(Log log)
+        public void saveLog(Log log)
         {
-            db.Entry(log).State = System.Data.Entity.EntityState.Added;
-            db.SaveChanges();
+            if (log.UserId > 0)
+            {
+                db.Entry(log).State = System.Data.Entity.EntityState.Added;
+            }
+
+            
+                db.SaveChanges();
+            
+            
         }
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
@@ -101,46 +118,8 @@ namespace GymInductionUI
             this.Close();
             Environment.Exit(0);
         }
-        /// <summary>
-        /// Validates the user credentials against those in the database
-        /// </summary>
-        /// <param name="username">
-        /// username entered by user
-        /// </param>
-        /// <param name="password">
-        /// password entered by user
-        /// </param>
-        /// <returns>
-        /// validated user
-        /// </returns>
-        public bool ValidateUserInput(string username, string password)
-        {
-            //initialise validated to true and pnly change to false when conditions are met
-            bool validated = true;
-
-            //check if username exists and is less than allowed 30 characters
-            if (username.Length == 0 || username.Length > 30)
-            {
-                validated = false;
-            }
-            //check for numbers in username I will allow for now
-            /*
-            foreach(char ch in username )
-            {
-                if(ch >= '0' && ch <= '9')
-                {
-                    validated = false;
-                }
-            }
-            */
-            //password exists and is no more than the allowed 30 characters
-            if (password.Length == 0 || password.Length > 30)
-            {
-                validated = false;
-            }
-            return validated;
-
-        }
+       
+        
         /// <summary>
         /// validated user credentials against those in the sql db
         /// </summary>

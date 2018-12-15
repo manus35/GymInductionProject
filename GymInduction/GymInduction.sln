@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GymInductionUI", "GymInduct
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GymLibrary", "GymLibrary\GymLibrary.csproj", "{E4E99C32-6D92-4A94-B07F-5699C76D2E0F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBLibrary.Tests", "DBLibrary.Tests\DBLibrary.Tests.csproj", "{13BBD285-E293-49BE-820B-00AE5E7CE25A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{E4E99C32-6D92-4A94-B07F-5699C76D2E0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4E99C32-6D92-4A94-B07F-5699C76D2E0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4E99C32-6D92-4A94-B07F-5699C76D2E0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13BBD285-E293-49BE-820B-00AE5E7CE25A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13BBD285-E293-49BE-820B-00AE5E7CE25A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13BBD285-E293-49BE-820B-00AE5E7CE25A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13BBD285-E293-49BE-820B-00AE5E7CE25A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

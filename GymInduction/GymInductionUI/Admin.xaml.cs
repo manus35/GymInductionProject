@@ -30,6 +30,7 @@ namespace GymInductionUI
         List<GymLibrary.Client> clients = new List<GymLibrary.Client>();
         List<Evaluation> evaluations = new List<Evaluation>();
         User selectedUser = new User();
+        User currentLoggedOnUser = new User();
         float avgHr = 0;
         double avgHeight = 0;
         double avgWeight = 0;
@@ -58,8 +59,9 @@ namespace GymInductionUI
         private TableSelected tableSelected = new TableSelected();
 
         DBOperation dbOperation = new DBOperation();
-        public Admin()
+        public Admin(User user)
         {
+            currentLoggedOnUser = user;
             InitializeComponent();
         }
 
@@ -90,6 +92,7 @@ namespace GymInductionUI
                 if (saveStatus == 1)
                 {
                     MessageBox.Show("User saved Successfully.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Information);
+                    //CreateLogEntry("Database", "User Saved Successfully", currentLoggedOnUser.UserId, currentLoggedOnUser.Username);
                     refreshUserList();
                     clearUserDetails();
                     stkUserDetails.Visibility = Visibility.Collapsed;
@@ -97,6 +100,7 @@ namespace GymInductionUI
                 else
                 {
                     MessageBox.Show("Problem saving User record.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    //CreateLogEntry("Database", "Problem Saving User Record", currentLoggedOnUser.UserId, currentLoggedOnUser.Username);
                 }
             }
             if (dbOperation == DBOperation.Modify)
@@ -113,6 +117,7 @@ namespace GymInductionUI
                 if (saveSuccess == 1)
                 {
                     MessageBox.Show("User Modified Successfully.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Information);
+                    //CreateLogEntry("Database", "User Modified Successfully", currentLoggedOnUser.UserId, currentLoggedOnUser.Username);
                     refreshUserList();
                     clearUserDetails();
                     stkUserDetails.Visibility = Visibility.Collapsed;
@@ -120,6 +125,7 @@ namespace GymInductionUI
                 else
                 {
                     MessageBox.Show("Problem Modifying User record.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Warning);
+                   // CreateLogEntry("Database", "Problem modifying User", currentLoggedOnUser.UserId, currentLoggedOnUser.Username);
                 }
 
             }
@@ -179,7 +185,8 @@ namespace GymInductionUI
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
-
+            stkUserDetails.Visibility = Visibility.Collapsed;
+            clearUserDetails();
         }
 
         private void lstUsers_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -227,6 +234,7 @@ namespace GymInductionUI
             if (saveSuccess == 1)
             {
                 MessageBox.Show("User Deleted Successfully.", "Delete from Database", MessageBoxButton.OK, MessageBoxImage.Information);
+                CreateLogEntry("Database", "Successful User Delete", currentLoggedOnUser.UserId, currentLoggedOnUser.Username);
                 refreshUserList();
                 clearUserDetails();
                 stkUserDetails.Visibility = Visibility.Collapsed;
@@ -234,6 +242,7 @@ namespace GymInductionUI
             else
             {
                 MessageBox.Show("Problem Deleting User record.", "Delete Database", MessageBoxButton.OK, MessageBoxImage.Warning);
+               //CreateLogEntry("Database", "Problem Deleting User", currentLoggedOnUser.UserId, currentLoggedOnUser.Username);
             }
 
 
@@ -353,6 +362,38 @@ namespace GymInductionUI
                 output = output + Environment.NewLine + $"Total Logs  in the Database is  {recordCount}." + Environment.NewLine;
                 tbkAnalysis.Text = output;
             }
+        }
+
+        private void CreateLogEntry(String category, String description, int userId, String username)
+        {
+            string comment = $"{description} user credentials  = {username}";
+            Log log = new Log();
+            if (userId > 0)
+            {
+                log.UserId = userId;
+            }
+            log.Category = category;
+            log.Description = comment;
+            log.Date = DateTime.Now;
+            saveLog(log);
+            /*
+            if (userId > 0)
+            { 
+            log.UserId = userId;
+            }
+            log.Category = category;
+            log.Description = comment;
+            log.Date = DateTime.Now;
+            saveLog(log);
+            */
+        }
+
+        private void saveLog(Log log)
+        {
+            db.Entry(log).State = System.Data.Entity.EntityState.Added;
+
+            db.SaveChanges();
+
         }
     }
 }

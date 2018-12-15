@@ -23,14 +23,14 @@ namespace GymInductionUI
 
     {
 
+        //connection string
         GymDbEntities db = new GymDbEntities("metadata=res://*/GymModel.csdl|res://*/GymModel.ssdl|res://*/GymModel.msl;provider = System.Data.SqlClient; provider connection string='data source = 192.168.1.110; initial catalog = GymDb; user id = GymUser; password=Pass.00*;pooling=False;MultipleActiveResultSets=True;App=EntityFramework'");
+        ClientProcess clientProcess = new ClientProcess();
 
-        
-        
-        int delSuccess;
-        int clientIdToMatch;
 
         //instance variables
+        int delSuccess;
+        int clientIdToMatch;
         bool isValidated,validated;
         GymLibrary.Client selectedClient = new GymLibrary.Client();
         GymLibrary.User currentUser = new GymLibrary.User();
@@ -49,8 +49,9 @@ namespace GymInductionUI
         DBOperation dbOperation = new DBOperation();
         public ClientUC(User user)
         {
+            //passed in user to check permisions
             this.currentUser = user;
-            MessageBox.Show(currentUser.LevelId.ToString());
+            
             InitializeComponent();
         }
 
@@ -74,6 +75,7 @@ namespace GymInductionUI
                     evaluationExists = true;
                 }
             }
+            
             //if no constraints delete client record only
             if(!inductionExists && !evaluationExists)
             {
@@ -82,6 +84,7 @@ namespace GymInductionUI
                 if (delSuccess == 1)
                 {
                     MessageBox.Show("Client Deleted Successfully.", "Delete from Database", MessageBoxButton.OK, MessageBoxImage.Information);
+                    //CreateLogEntry("Database", "Client deleted Successfully", currentUser.UserId, currentUser.Username);
                     refreshListViews();
                     clearClientDetails();
                     stkClientDetails.Visibility = Visibility.Collapsed;
@@ -90,6 +93,7 @@ namespace GymInductionUI
                 else
                 {
                     MessageBox.Show("Problem Deleting Client record.", "Delete Database", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    CreateLogEntry("Database", "Problem deleting client", currentUser.UserId, currentUser.Username);
                 }
             }
             else
@@ -98,7 +102,7 @@ namespace GymInductionUI
                 //delete client and all associated records, start with related 
                 db.Inductions.RemoveRange(db.Inductions.Where(t => t.ClientId == selectedClient.ClientId));
                 delSuccess = db.SaveChanges();
-                if (delSuccess == 1 && evaluationExists || inductionExists)
+                if ( evaluationExists || inductionExists)
                 {
                     
                     db.Evaluations.RemoveRange(db.Evaluations.Where(t => t.ClientId == selectedClient.ClientId));
@@ -110,6 +114,7 @@ namespace GymInductionUI
                         if (delSuccess == 1)
                         {
                             MessageBox.Show("Client Deleted Successfully.", "Delete from Database", MessageBoxButton.OK, MessageBoxImage.Information);
+                            //CreateLogEntry("Database", "Client deleted Successfully", currentUser.UserId, currentUser.Username);
                             refreshListViews();
                             clearClientDetails();
                             stkClientDetails.Visibility = Visibility.Collapsed;
@@ -118,6 +123,7 @@ namespace GymInductionUI
                         else
                         {
                             MessageBox.Show("Problem Deleting Client record.", "Delete Database", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            CreateLogEntry("Database", "Problem deleting client", currentUser.UserId, currentUser.Username);
                         }
 
 
@@ -131,7 +137,7 @@ namespace GymInductionUI
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
 
-            isValidated = validateClientInput(); //need to do for others
+            isValidated = clientProcess.validateClientInput(tbxFirstName.Text,tbxLastName.Text,tbxDateOfBirth.Text,tbxPhoneNumber.Text,tbxGender.Text); //need to do for others
 
             if (!isValidated)
             {
@@ -155,6 +161,7 @@ namespace GymInductionUI
                 {
                     refreshListViews();
                     MessageBox.Show("Client saved Successfully.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Information);
+                    CreateLogEntry("Database", "Client save Successfully", currentUser.UserId, currentUser.Username);
                     clearClientDetails();
 
 
@@ -162,6 +169,7 @@ namespace GymInductionUI
                 else
                 {
                     MessageBox.Show("Problem saving Client record.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    CreateLogEntry("Database", "Client save problem", currentUser.UserId, currentUser.Username);
                 }
             }
 
@@ -181,6 +189,7 @@ namespace GymInductionUI
                 if (saveSuccess == 1)
                 {
                     MessageBox.Show("Client Modified Successfully.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Information);
+                    CreateLogEntry("Database", "Client Modfy Successfull", currentUser.UserId, currentUser.Username);
                     refreshListViews(); 
                     clearClientDetails();
                     stkClientDetails.Visibility = Visibility.Collapsed;
@@ -188,6 +197,7 @@ namespace GymInductionUI
                 else
                 {
                     MessageBox.Show("Problem Modifying Client record.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    CreateLogEntry("Database", "Client Modify problem", currentUser.UserId, currentUser.Username);
                 }
 
             }
@@ -211,6 +221,7 @@ namespace GymInductionUI
             catch (Exception)
             {
                 MessageBox.Show("Error saving Client record.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Error);
+                CreateLogEntry("Database", "Client save Error", currentUser.UserId, currentUser.Username);
             }
             return saveSuccess;
         }
@@ -263,7 +274,7 @@ namespace GymInductionUI
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            
+            checkUserAccess(currentUser);
             refreshListViews();
             refreshInstructorList();
 
@@ -305,10 +316,12 @@ namespace GymInductionUI
             {
                 validated = false;
             }
+            //note,cant find date type max length
             if (tbxDate.Text.Length == 0 || tbxDate.Text.Length > 20)
             {
                 validated = false;
             }
+            //note cant find time max length
             if (tbxTime.Text.Length == 0 || tbxTime.Text.Length > 20)
             {
                 validated = false;
@@ -330,29 +343,29 @@ namespace GymInductionUI
         {
             validated = true;
 
-            if (tbxHeight.Text.Length == 0 || tbxHeight.Text.Length > 20)
+            if (tbxHeight.Text.Length == 0 || tbxHeight.Text.Length > 6)
             {
                 validated = false;
             }
 
-            if (tbxEvlClientId.Text.Length == 0 || tbxEvlClientId.Text.Length > 20)
+            if (tbxEvlClientId.Text.Length == 0)
             {
                 validated = false;
             }
            
-            if (tbxWeight.Text.Length == 0 || tbxWeight.Text.Length > 20)
+            if (tbxWeight.Text.Length == 0 || tbxWeight.Text.Length > 5)
             {
                 validated = false;
             }
-            if (tbxHeartRate.Text.Length == 0 || tbxHeartRate.Text.Length > 20)
+            if (tbxHeartRate.Text.Length == 0 || tbxHeartRate.Text.Length > 3)
             {
                 validated = false;
             }
-            if (tbxBoodPressure.Text.Length == 0 || tbxBoodPressure.Text.Length > 20)
+            if (tbxBoodPressure.Text.Length == 0 || tbxBoodPressure.Text.Length > 10)
             {
                 validated = false;
             }
-            if (tbxGoal.Text.Length == 0 || tbxGoal.Text.Length > 30)
+            if (tbxGoal.Text.Length == 0 || tbxGoal.Text.Length > 50)
             {
                 validated = false;
             }
@@ -404,7 +417,8 @@ namespace GymInductionUI
 
             foreach (var client in db.Clients)
             {
-                clients.Add(client);
+                clientProcess.addClientToList(clients, client);
+                //clients.Add(client);
             }
             lstClientDetails.ItemsSource = clients;
             lstIndDetails.ItemsSource = inductions;
@@ -519,7 +533,7 @@ namespace GymInductionUI
                     }
                     if (dbOperation == DBOperation.ModifyEvaluation)
                     {
-                        tbiEvaluation.IsEnabled = true;
+                    checkUserAccess(currentUser);
                     tbxEvlClientId.Text = selectedClient.ClientId.ToString();
                     tbxHeight.Text = selectedEvaluation.Height.ToString();
                     tbxWeight.Text = selectedEvaluation.Weight.ToString();
@@ -569,7 +583,7 @@ namespace GymInductionUI
         /// </param>
         
         /// <returns>
-        /// void sets textboxes of client,induction,evaluation tabs
+        /// void sets Listviews of client,induction,evaluation tabs
         /// </returns>
         private void populateClientTabs(int inductionId)
         {
@@ -610,7 +624,8 @@ namespace GymInductionUI
             {
                 if (record.ClientId > 0)
                 {
-                    tbiClient.IsEnabled = true;
+                    checkUserAccess(currentUser);
+
 
                     tbxPhoneNumber.Text = record.PhoneNumber.ToString();
                     tbxFirstName.Text = record.FirstName;
@@ -620,7 +635,7 @@ namespace GymInductionUI
                 }
                 if (record.InductionId > 0)
                 {
-                    tbiInduction.IsEnabled = true;
+                    checkUserAccess(currentUser);
                     tbxDate.Text = record.Date.ToString();
                     tbxTime.Text = record.Time.ToString();
                     tbxStatus.Text = record.Status;
@@ -633,7 +648,7 @@ namespace GymInductionUI
                 
                 if (record.EvaluationId > 0)
                 {
-                    tbiEvaluation.IsEnabled = true;
+                    checkUserAccess(currentUser);
                     tbxBoodPressure.Text = record.BloodPressure;
                     tbxHeartRate.Text = record.HeartRate.ToString();
                     tbxHeight.Text = record.Height.ToString();
@@ -652,12 +667,14 @@ namespace GymInductionUI
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
-
+            stkClientDetails.Visibility = Visibility.Collapsed;
+            clearClientDetails();
         }
 
         private void submenuAddInd_Click(object sender, RoutedEventArgs e)
         {
             cmbIndInsId.Items.Refresh();
+            refreshInstructorList();
             stkIndDetails.Visibility = Visibility.Visible;
 
             checkUserAccess(currentUser);
@@ -669,6 +686,7 @@ namespace GymInductionUI
         private void submenuModInd_Click(object sender, RoutedEventArgs e)
         {
             cmbIndInsId.Items.Refresh();
+            refreshInstructorList();
             stkIndDetails.Visibility = Visibility.Visible;
             //stkEvaluationDetails.Visibility = Visibility.Visible;
             selectedInduction = inductions.ElementAt(lstIndDetails.SelectedIndex);
@@ -677,7 +695,9 @@ namespace GymInductionUI
             tbxTime.Text = selectedInduction.Time.ToString();
             tbxStatus.Text = selectedInduction.Status;
             tbxIndClientId.Text = selectedInduction.ClientId.ToString();
-            cmbIndInsId.SelectedIndex = selectedInduction.InstructorId+1;
+            //cmbIndInsId.SelectedIndex = selectedInduction.InstructorId+1;
+            int insFound = findInstructorId(selectedInduction.ClientId);
+            cmbIndInsId.SelectedIndex = insFound;
         }
 
         private void submenuDelInd_Click(object sender, RoutedEventArgs e)
@@ -702,7 +722,9 @@ namespace GymInductionUI
 
         private void btnIndCancel_Click(object sender, RoutedEventArgs e)
         {
-
+            stkIndDetails.Visibility = Visibility.Collapsed;
+            
+            clearInductionDetails();
         }
 
         private void btnIndOK_Click(object sender, RoutedEventArgs e)
@@ -710,7 +732,7 @@ namespace GymInductionUI
             {
 
 
-                isValidated = validateInductionInput();
+                isValidated = clientProcess.validateInductionInput(tbxIndClientId.Text,tbxDate.Text,tbxTime.Text,tbxStatus.Text,cmbIndInsId.SelectedIndex,instructors.Count);
 
                 if (!isValidated)
                 {
@@ -746,7 +768,7 @@ namespace GymInductionUI
                     inductionToAdd.ClientId = Convert.ToInt32(tbxIndClientId.Text.Trim());
 
                     inductionToAdd.InstructorId = cmbIndInsId.SelectedIndex+1;
-                    MessageBox.Show(cmbIndInsId.SelectedIndex + 1.ToString());
+                    
                     inductionToAdd.Date = Convert.ToDateTime(tbxDate.Text.Trim());
                     inductionToAdd.Time = TimeSpan.Parse(tbxTime.Text.Trim());
                     inductionToAdd.Status = tbxStatus.Text.Trim();
@@ -851,7 +873,8 @@ namespace GymInductionUI
 
         private void btnEvlCancel_Click(object sender, RoutedEventArgs e)
         {
-
+            stkEvaluationDetails.Visibility = Visibility.Collapsed;
+            clearEvaluationDetails();
         }
 
         private void btnEvlOK_Click(object sender, RoutedEventArgs e)
@@ -886,7 +909,7 @@ namespace GymInductionUI
 
             if (dbOperation == DBOperation.AddEvaluation && isValidated && clientMatch == true)
             {
-                MessageBox.Show("in db add");
+                
 
                 //get  Evaluation text input
 
@@ -923,10 +946,10 @@ namespace GymInductionUI
                     MessageBox.Show("Problem saving Evaluation record.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
-            MessageBox.Show("before db modify");
+            
             if (dbOperation == DBOperation.ModifyEvaluation && clientMatch)
             {
-                MessageBox.Show("in db modify");
+                
                 //find evaluations with client id
                 clientIdToMatch = Convert.ToInt32(tbxEvlClientId.Text.Trim());
                 foreach (var evaluation in db.Evaluations)
@@ -996,16 +1019,17 @@ namespace GymInductionUI
                         instructorMatch = 0;
                     }
                    
-                    MessageBox.Show("Instructor Id"+ instructorMatch);
+                    
                 }   
             }
             return instructorMatch;
         }
         private void submenuSchedule_Click(object sender, RoutedEventArgs e)
         {
+            clearInductionDetails();
             stkIndDetails.Visibility = Visibility.Visible;
             cmbIndInsId.Items.Refresh();
-            tbiInduction.IsEnabled = true;
+            checkUserAccess(currentUser);
             refreshListViews();
             refreshInstructorList();
 
@@ -1028,15 +1052,20 @@ namespace GymInductionUI
                     cmbIndInsId.SelectedIndex = insFound;
                     
                 }
-            }
-            
-            
-                
+            }   
                 //clearAllTextFields();
                 tabClient.SelectedItem = tbiInduction;
                 tbiInduction.Focus();
             }
 
+        /// <summary>
+        /// Finds the instructor id matching the client id that the instructor was assigned
+        /// </summary>
+        /// <param name="cliId">
+        /// int clientId of client to associated with the instructor</param>
+        /// <returns>
+        /// Returns the instructor id matching the client id that the instructor was assigned
+        /// </returns>
         private int findEvlInstructorId(int cliId)
         {
             int instructorMatch = 0;
@@ -1052,7 +1081,7 @@ namespace GymInductionUI
                         instructorMatch = 0;
                     }
 
-                    MessageBox.Show("evaluation Id" + instructorMatch);
+                    
                 }
             }
             return instructorMatch;
@@ -1062,7 +1091,10 @@ namespace GymInductionUI
         {
             stkEvaluationDetails.Visibility = Visibility.Visible;
             cmbEvlInsId.Items.Refresh();
-            tbiEvaluation.IsEnabled = true;
+            if (currentUser.UserId != 2)
+            {
+                checkUserAccess(currentUser);
+            }
 
             dbOperation = DBOperation.AddEvaluation;
             tbxEvlClientId.Text = selectedClient.ClientId.ToString();
@@ -1110,7 +1142,7 @@ namespace GymInductionUI
                 }
                 if (dbOperation == DBOperation.ModifyInduction)
                 {
-                    tbiInduction.IsEnabled = true;
+                    checkUserAccess(currentUser);
                     tbxDate.Text = selectedInduction.Date.ToString();
                     tbxTime.Text = selectedInduction.Time.ToString();
                     tbxStatus.Text = selectedInduction.Status;
@@ -1145,7 +1177,14 @@ namespace GymInductionUI
             return bmi;
         }
 
-        //check user permisions and apply 
+        /// <summary>
+        /// Uses the passed in current user object to set permisions for that user
+        /// </summary>
+        /// <param name="user">
+        /// represents the current user logged in</param>
+        /// <returns>
+        /// Method is void but hides all content not permitted to the user
+        /// </returns>
         private void checkUserAccess(User user)
         {
             if (user.LevelId == 1)
@@ -1156,7 +1195,7 @@ namespace GymInductionUI
                 submenuDelClient.IsEnabled = false;
                 submenuModClient.IsEnabled = false;
                 submenuSchedule.IsEnabled = false;
-                submenuAddInd.IsEnabled = false;
+                
                 
 
             }
@@ -1171,6 +1210,29 @@ namespace GymInductionUI
                 submenuDelClient.IsEnabled = false;
                 submenuModClient.IsEnabled = false;
             }
+        }
+
+        private void CreateLogEntry(String category, String description, int userId, String username)
+        {
+            string comment = ""+(description) +""+" user credentials  ="+ (username);
+            Log log = new Log();
+            if (userId > 0)
+            {
+                log.UserId = userId;
+            }
+            log.Category = category;
+            log.Description = comment;
+            log.Date = DateTime.Now;
+            saveLog(log);
+           
+        }
+
+        private void saveLog(Log log)
+        {
+            db.Entry(log).State = System.Data.Entity.EntityState.Added;
+
+            db.SaveChanges();
+
         }
 
 

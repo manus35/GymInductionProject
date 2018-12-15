@@ -8,8 +8,6 @@
         WindowState="Normal"
         WindowStyle="None"
         Loaded="Window_Loaded"
-       
-        
         Title="Dashboard" Height="450" Width="800">
     <Grid>
         <Grid.Background>
@@ -26,16 +24,16 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,10,0,10">
-            <TextBox Name="tbxSearchbox" Height="26" Width="100" Margin="10,0" />
-            <Button Name="btnSearch" Content="Search" Height="26" Width="100" Margin="10,0" Click="btnSearch_Click" />
+            <TextBox Name="tbxSearchbox" Height="26" Width="100" Margin="10,0" ToolTip="This feature is currently under development" />
+            <Button Name="btnSearch" Content="Search" Height="26" Width="100" Margin="10,0" Click="btnSearch_Click" ToolTip="This search area is currently under development" />
             <Button Name="btnReset" Content="Reset" Height="26" Width="100" Margin="10,0" />
         </StackPanel>
 
         <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,10" >
-            
-            <Button Name="btnAdmin" Visibility="Collapsed" Content="Admin" Height="26" Width="100" Margin="10,0" Click="btnAdmin_Click" />
-            <Button Name="btnClient"  Content="Client" Height="26" Width="100" Margin="10,0" Click="btnClient_Click" />
-            <Button Name="btnExit" Content="Exit" Height="26" Width="100" Margin="10,0" Click="btnExit_Click" />
+
+            <Button Name="btnAdmin" Visibility="Collapsed" Content="Admin" Height="26" Width="100" Margin="10,0" Click="btnAdmin_Click" ToolTip="Click here to enter Admin area, to add users,view logs and analysis"  />
+            <Button Name="btnClient"  Content="Client" Height="26" Width="100" Margin="10,0" Click="btnClient_Click" ToolTip="Click here to enter Client Area,Add Clients,Schedule Inductions or add Evaluation Details" />
+            <Button Name="btnExit" Content="Exit" Height="26" Width="100" Margin="10,0" Click="btnExit_Click" ToolTip="Click here to Exit the Application" />
         </StackPanel>
 
         <DockPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="6,10,6,0">

@@ -47,7 +47,7 @@ namespace GymInductionUI
             }
             else
             {
-                Admin admin = new Admin();
+                Admin admin = new Admin(user);
                 frmMain.Navigate(admin);
             }
         }
@@ -74,15 +74,19 @@ namespace GymInductionUI
 
         private void checkUserAccess(User user)
         {
-            if(user.LevelId== 4)
+            if(user.LevelId > 0)
             {
-                btnAdmin.Visibility = Visibility.Visible;    
+                if (user.LevelId == 4)
+                {
+                    btnAdmin.Visibility = Visibility.Visible;
+                }
+                if (user.LevelId == 3)
+                {
+                    btnAdmin.Content = "Schedule";
+                    btnAdmin.Visibility = Visibility.Visible;
+                }
             }
-            if (user.LevelId == 3)
-            {
-                btnAdmin.Content = "Schedule";
-                btnAdmin.Visibility = Visibility.Visible;
-            }
+            
             
         }
 

@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GymInductionUI"
              mc:Ignorable="d" 
+             
              Loaded="UserControl_Loaded"
              d:DesignHeight="450" d:DesignWidth="800">
 
@@ -21,7 +22,7 @@
                     </Style>
                 </TabControl.Resources>
 
-                <TabItem Header="Client" Name="tbiClient" IsEnabled="true">
+                <TabItem Header="Client"  Name="tbiClient"  IsEnabled="true">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="97*"/>
@@ -32,7 +33,7 @@
                             <RowDefinition Height="60*"/>
                         </Grid.RowDefinitions>
 
-                        <ListView Name="lstClientDetails" Grid.Row="0" SelectionChanged="lstClientDetails_SelectionChanged" Grid.ColumnSpan="2">
+                        <ListView Name="lstClientDetails" Grid.Row="0" SelectionChanged="lstClientDetails_SelectionChanged" Grid.ColumnSpan="2" ToolTip="Details of all Clients, Right Click for further options" >
                             <ListView.View>
                                 <GridView>
                                     <GridViewColumn Header="Client Id"  Width="150">
@@ -89,27 +90,27 @@
                             <ListView.ContextMenu>
                                 <ContextMenu Name="mnuClientListOverview"  IsEnabled="True" >
                                     <ContextMenu.Items>
-                                        <MenuItem Header="Add New Client"   Name="submenuAddClient" IsEnabled="True" Click="submenuAddClient_Click">
+                                        <MenuItem Header="Add New Client"   Name="submenuAddClient" IsEnabled="True" Click="submenuAddClient_Click" ToolTip="Add a new Client" >
                                             <MenuItem.Icon>
                                                 <Image Source="images/add.png" />
                                             </MenuItem.Icon>
                                         </MenuItem>
-                                        <MenuItem Header="Modify selected Client" Name="submenuModClient" IsEnabled="True" Click="submenuModClient_Click">
+                                        <MenuItem Header="Modify selected Client" Name="submenuModClient" IsEnabled="True" Click="submenuModClient_Click" ToolTip="Modify the selected Client">
                                             <MenuItem.Icon>
                                                 <Image Source="images/edit.png"  />
                                             </MenuItem.Icon>
                                         </MenuItem>
-                                        <MenuItem Header="Delete selected Client" Name="submenuDelClient" IsEnabled="True" Click="submenuDelClient_Click">
+                                        <MenuItem Header="Delete selected Client" Name="submenuDelClient" IsEnabled="True" Click="submenuDelClient_Click" ToolTip="Delete the selected  Client">
                                             <MenuItem.Icon>
                                                 <Image Source="images/delete.png"  />
                                             </MenuItem.Icon>
                                         </MenuItem>
-                                        <MenuItem Header="Schedule Induction"   Name="submenuSchedule" IsEnabled="True" Click="submenuSchedule_Click">
+                                        <MenuItem Header="Schedule Induction"   Name="submenuSchedule" IsEnabled="True" Click="submenuSchedule_Click" ToolTip="Schedule an induction for the selected Client" >
                                             <MenuItem.Icon>
                                                 <Image Source="images/add.png" />
                                             </MenuItem.Icon>
                                         </MenuItem>
-                                        <MenuItem Header="Enter Evaluation Details"   Name="submenuEvaluation" IsEnabled="True" Click="submenuEvaluation_Click">
+                                        <MenuItem Header="Enter Evaluation Details"   Name="submenuEvaluation" IsEnabled="True" Click="submenuEvaluation_Click" ToolTip="Add Evaluation Details for selected Client" >
                                             <MenuItem.Icon>
                                                 <Image Source="images/add.png" />
                                             </MenuItem.Icon>
@@ -121,7 +122,7 @@
 
                         </ListView>
 
-                        <StackPanel Name="stkClientDetails" Visibility="Collapsed" Grid.Row="1" Grid.ColumnSpan="2">
+                        <StackPanel Name="stkClientDetails" Visibility="Collapsed" Grid.Row="1" Grid.ColumnSpan="2" ToolTip="Please enter Details in Corresponding Textboxes" >
                             <Grid>
 
                                 <Grid.ColumnDefinitions>
@@ -170,8 +171,8 @@
 
                                 <!-- row  10 buttons -->
                                 <StackPanel Grid.Row="10" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center"  >
-                                    <Button Name="btnCancel" Width="100" Content="Cancel" Margin="10,0" TabIndex="5" Click="btnCancel_Click" />
-                                    <Button Name="btnOK" Width="100" Content="OK" Margin="10,0" Background ="LightGreen" TabIndex="6" Click="btnOK_Click" />
+                                    <Button Name="btnCancel" Width="100" Content="Cancel" Margin="10,0" TabIndex="5" Click="btnCancel_Click" Background="LightPink" ToolTip="Click to clear fields if you wish to restart or cancel"  />
+                                    <Button Name="btnOK" Width="100" Content="OK" Margin="10,0" Background ="LightGreen" TabIndex="6" Click="btnOK_Click" ToolTip="Click to confirm update and enter details"   />
                                 </StackPanel>
 
                             </Grid>
@@ -184,14 +185,14 @@
 
                 </TabItem>
 
-                <TabItem Header="Induction Details" Name="tbiInduction" IsEnabled="True">
+                <TabItem Header="Induction Details" Name="tbiInduction"  IsEnabled="True">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="40*"/>
                             <RowDefinition Height="60*"/>
                         </Grid.RowDefinitions>
 
-                        <ListView Name="lstIndDetails" Grid.Row="0" SelectionChanged="lstIndtDetails_SelectionChanged">
+                        <ListView Name="lstIndDetails" ToolTip="Details of all Inductions, Right Click for further options" Grid.Row="0" SelectionChanged="lstIndtDetails_SelectionChanged">
                             <ListView.View>
                                 <GridView>
                                     <GridViewColumn Header="Client Id"  Width="150">
@@ -275,11 +276,6 @@
                             <ListView.ContextMenu>
                                 <ContextMenu Name="mnuIndListOverview" IsEnabled="True" >
                                     <ContextMenu.Items>
-                                        <MenuItem Header="Add New Induction"   Name="submenuAddInd" IsEnabled="True" Click="submenuAddInd_Click">
-                                            <MenuItem.Icon>
-                                                <Image Source="images/add.png" />
-                                            </MenuItem.Icon>
-                                        </MenuItem>
                                         <MenuItem Header="Modify selected Induction" Name="submenuModInd" IsEnabled="True" Click="submenuModInd_Click">
                                             <MenuItem.Icon>
                                                 <Image Source="images/edit.png"  />
@@ -297,7 +293,7 @@
 
                         </ListView>
 
-                        <StackPanel Name="stkIndDetails" Visibility="Collapsed" Grid.Row="1">
+                        <StackPanel Name="stkIndDetails" Visibility="Collapsed" Grid.Row="1" ToolTip="Please enter Details in Corresponding Textboxes">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="3*"/>
@@ -327,11 +323,11 @@
                                                                  
                                 <!-- row 2 -->
                                 <Label Grid.Row="2" Grid.Column="0"  Content="Client Id: "  />
-                                <TextBox Name="tbxIndClientId" Grid.Row="2" Grid.Column="2" TabIndex="0"  IsReadOnly="True"/>
+                                <TextBox Name="tbxIndClientId" Grid.Row="2" Grid.Column="2" TabIndex="0"  IsReadOnly="True" ToolTip="Current Client Id,read only field" />
 
                                 <!-- row 3 -->
                                 <Label Grid.Row="4" Grid.Column="0"  Content="Assigned Instructor: " />
-                                <ComboBox Name="cmbIndInsId" Grid.Row="4" Grid.Column="2" TabIndex="0" Width="200" HorizontalAlignment="Left" SelectionChanged="cmbIndInsId_SelectionChanged">
+                                <ComboBox Name="cmbIndInsId" Grid.Row="4" Grid.Column="2" TabIndex="0" Width="200" HorizontalAlignment="Left" SelectionChanged="cmbIndInsId_SelectionChanged" ToolTip="The assigned Instructor,Please choose if not selected" >
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding FullName}"/>
@@ -355,8 +351,8 @@
 
                                 <!-- row  10 buttons -->
                                 <StackPanel Grid.Row="10" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center"  >
-                                    <Button Name="btnIndCancel" Width="100" Content="Cancel" Margin="10,0" TabIndex="5" Click="btnIndCancel_Click" />
-                                    <Button Name="btnIndOK" Width="100" Content="OK" Margin="10,0" Background ="LightGreen" TabIndex="6" Click="btnIndOK_Click" />
+                                    <Button Name="btnIndCancel" Width="100" Content="Cancel" Margin="10,0" TabIndex="5" Click="btnIndCancel_Click" Background="LightPink" ToolTip="Click to clear fields if you wish to restart or cancel" />
+                                    <Button Name="btnIndOK" Width="100" Content="OK" Margin="10,0" Background ="LightGreen" TabIndex="6" Click="btnIndOK_Click" ToolTip="Click to update and confirm details"/>
                                 </StackPanel>
 
 
@@ -374,14 +370,14 @@
 
                 </TabItem>
 
-                <TabItem Header="Evaluation Details" Name="tbiEvaluation" IsEnabled="True">
+                <TabItem Header="Evaluation Details" Name="tbiEvaluation" ToolTip="This tab contains details on Client Evaluations" IsEnabled="True">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="25*"/>
                             <RowDefinition Height="70*"/>
                         </Grid.RowDefinitions>
 
-                        <ListView Name="lstEvaluationDetails" Grid.Row="0" SelectionChanged="lstEvaluationDetails_SelectionChanged">
+                        <ListView Name="lstEvaluationDetails" Grid.Row="0" ToolTip="Details of all Evaluations, Right Click for further options" SelectionChanged="lstEvaluationDetails_SelectionChanged">
                             <ListView.View>
                                 <GridView>
                                     <GridViewColumn Header="Client Id"  Width="150">
@@ -413,7 +409,7 @@
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
 
-                                    <GridViewColumn Header="Height"  Width="100">
+                                    <GridViewColumn Header="Height (Feet)"  Width="150">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="{Binding Height}" />
@@ -421,7 +417,7 @@
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
 
-                                    <GridViewColumn Header="Weight"  Width="100">
+                                    <GridViewColumn Header="Weight (KG)"  Width="110">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="{Binding Weight}" />
@@ -477,12 +473,12 @@
                                                 <Image Source="images/add.png" />
                                             </MenuItem.Icon>
                                         </MenuItem>
-                                        <MenuItem Header="Modify Evaluation Results" Name="submenuModEvaluation" IsEnabled="False" Click="submenuModEvaluation_Click">
+                                        <MenuItem Header="Modify Evaluation Results" Name="submenuModEvaluation" IsEnabled="True" Click="submenuModEvaluation_Click">
                                             <MenuItem.Icon>
                                                 <Image Source="images/edit.png"  />
                                             </MenuItem.Icon>
                                         </MenuItem>
-                                        <MenuItem Header="Delete selected Evaluation" Name="submenuDelEvaluation" IsEnabled="False" Click="submenuDelEvaluation_Click">
+                                        <MenuItem Header="Delete selected Evaluation" Name="submenuDelEvaluation" IsEnabled="True" Click="submenuDelEvaluation_Click">
                                             <MenuItem.Icon>
                                                 <Image Source="images/delete.png"  />
                                             </MenuItem.Icon>
@@ -494,7 +490,7 @@
 
                         </ListView>
 
-                        <StackPanel Name="stkEvaluationDetails" Visibility="Collapsed" Grid.Row="1">
+                        <StackPanel Name="stkEvaluationDetails" Visibility="Collapsed" Grid.Row="1" ToolTip="Please enter Details in Corresponding Textboxes">
                             <Grid>
 
                                 <Grid.ColumnDefinitions>
@@ -522,11 +518,11 @@
 
                                 <!-- row 1 -->
                                 <Label Grid.Row="1" Grid.Column="0"  Content="Client Id: " />
-                                <TextBox Name="tbxEvlClientId" Grid.Row="1" Grid.Column="1" IsReadOnly="True" TabIndex="0" />
+                                <TextBox Name="tbxEvlClientId" Grid.Row="1" Grid.Column="1" IsReadOnly="True" TabIndex="0" ToolTip="Current Client Id,read only field" />
 
                                 <!-- row 2 -->
                                 <Label Grid.Row="2" Grid.Column="0"  Content="Assigned Instructor: " />
-                                <ComboBox Name="cmbEvlInsId" Grid.Row="2" Grid.Column="2" TabIndex="0" Width="200" HorizontalAlignment="Left" >
+                                <ComboBox Name="cmbEvlInsId" Grid.Row="2" Grid.Column="2" TabIndex="0" Width="200" HorizontalAlignment="Left" ToolTip="Assigned Instructor" >
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding FullName}"/>
@@ -536,15 +532,15 @@
 
                                 <!-- row 3 -->
                                 <Label Grid.Row="3" Grid.Column="0"  Content="Client Height: " />
-                                <TextBox Name="tbxHeight" Grid.Row="3" Grid.Column="1" TabIndex="0" />
+                                <TextBox Name="tbxHeight" Grid.Row="3" Grid.Column="1" TabIndex="0" ToolTip="Enter height in Feet and Inches, (eg input: 5.11)" />
 
                                 <!-- row 4 -->
                                 <Label Grid.Row="4" Grid.Column="0"  Content="Client Weight: " />
-                                <TextBox Name="tbxWeight" Grid.Row="4" Grid.Column="1" TabIndex="1" />
+                                <TextBox Name="tbxWeight" Grid.Row="4" Grid.Column="1" TabIndex="1" ToolTip="Enter weight in KG, (eg 77.8)" />
 
                                 <!-- row 5 -->
                                 <Label Grid.Row="5" Grid.Column="0"  Content="Client BMI: " />
-                                <TextBox Name="tbxBMI" Grid.Row="5" Grid.Column="1" TabIndex="1" IsReadOnly="False" />
+                                <TextBox Name="tbxBMI" IsReadOnly="True" Grid.Row="5" Grid.Column="1" TabIndex="1" ToolTip="Read Only field, BMI is calculated Automatically" />
 
                                 <!-- row 6 -->
                                 <Label Grid.Row="6" Grid.Column="0"  Content="Client Heart Rate: " />
@@ -564,8 +560,8 @@
 
                                 <!-- row  10 buttons -->
                                 <StackPanel Grid.Row="11" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center"  >
-                                    <Button Name="btnEvlCancel" Width="100" Content="Cancel" Margin="10,0" TabIndex="5" Click="btnEvlCancel_Click" />
-                                    <Button Name="btnEvlOK" Width="100" Content="OK" Margin="10,0" Background ="LightGreen" TabIndex="6" Click="btnEvlOK_Click" />
+                                    <Button Name="btnEvlCancel" Width="100" Content="Cancel" Margin="10,0" TabIndex="5" Click="btnEvlCancel_Click" Background="LightPink" ToolTip="Click to clear fields if you wish to restart or cancel"  />
+                                    <Button Name="btnEvlOK" Width="100" Content="OK" Margin="10,0" Background ="LightGreen" TabIndex="6" Click="btnEvlOK_Click" ToolTip="Click to update and confirm details"  />
                                 </StackPanel>
 
 
