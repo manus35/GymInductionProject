@@ -71,46 +71,27 @@ namespace GymInductionUI
         public void CreateLogEntry(String category, String description, int userId, String username)
         {
             string comment = "";
-            if (userId > 0)
-            {
-                comment = $"{description} user credentials  = {username}";
-            }
-            else
-            {
-                comment = "User login unsuccessful";
-            }
+            
+            comment = $"{description} user credentials  = {username}";
+          
             Log log = new Log();
             if (userId > 0)
             { 
             log.UserId = userId;
+                
             }
             log.Category = category;
             log.Description = comment;
             log.Date = DateTime.Now;
             saveLog(log);
-            /*
-            if (userId > 0)
-            { 
-            log.UserId = userId;
-            }
-            log.Category = category;
-            log.Description = comment;
-            log.Date = DateTime.Now;
-            saveLog(log);
-            */
+           
         }
 
         public void saveLog(Log log)
         {
-            if (log.UserId > 0)
-            {
+            
                 db.Entry(log).State = System.Data.Entity.EntityState.Added;
-            }
-
-            
-                db.SaveChanges();
-            
-            
+                db.SaveChanges();                 
         }
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
@@ -155,5 +136,21 @@ namespace GymInductionUI
             return validatedUser;
 
         }
+
+        private User findUserByUserId(int userId)
+        {
+            User foundUser = new User();
+            foreach (var user in db.Users)
+            {
+                if(user.UserId == userId)
+                {
+                    foundUser = user;
+                }
+
+            }
+            return foundUser;
+        }
+
+
     }
 }

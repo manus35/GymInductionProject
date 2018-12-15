@@ -15,11 +15,9 @@ namespace GymLibrary
     public partial class Log
     {
         public int LogId { get; set; }
-        public int UserId { get; set; }
         public string Category { get; set; }
         public string Description { get; set; }
         public System.DateTime Date { get; set; }
-    
-        public virtual User User { get; set; }
+        public int UserId { get; set; }
     }
 }

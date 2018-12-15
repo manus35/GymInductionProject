@@ -24,15 +24,7 @@ namespace GymLibrary
         public int InstructorId { get; set; }
         public string FName { get; set; }
         public string LName { get; set; }
-
-        public string FullName
-        {
-            get
-            {
-                return $"{FName} {LName}";
-            }
-        }
-
+    
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Evaluation> Evaluations { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

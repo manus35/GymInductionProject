@@ -15,8 +15,8 @@ namespace GymLibrary
     
     public partial class GymDbEntities : DbContext
     {
-        public GymDbEntities(string connection)
-            : base(connection)
+        public GymDbEntities(string con)
+            : base(con)
         {
         }
     
@@ -30,7 +30,7 @@ namespace GymLibrary
         public virtual DbSet<Evaluation> Evaluations { get; set; }
         public virtual DbSet<Induction> Inductions { get; set; }
         public virtual DbSet<Instructor> Instructors { get; set; }
-        public virtual DbSet<Log> Logs { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Log> Logs { get; set; }
     }
 }

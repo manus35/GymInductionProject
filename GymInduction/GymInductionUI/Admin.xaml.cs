@@ -351,8 +351,11 @@ namespace GymInductionUI
             {
                 foreach (var log in logs)
                 {
+                    //find the user with user id logged
+                    
+                    User logUser = findUserByUserId(log.UserId);
                     recordCount++;
-                    output = output + Environment.NewLine + $"Record {recordCount} is for Log created by {log.User.FirstName} {log.User.LastName} " +
+                    output = output + Environment.NewLine + $"Record {recordCount} is for Log created by {logUser.FirstName} {logUser.LastName} " +
                         $"whose UserId is {log.UserId}, " + Environment.NewLine +
                         $"log was created on  {log.Date} " + Environment.NewLine +
                         $" Log is registered for the category of {log.Category}" +
@@ -394,6 +397,20 @@ namespace GymInductionUI
 
             db.SaveChanges();
 
+        }
+
+        private User findUserByUserId(int userId)
+        {
+            User foundUser = new User();
+            foreach (var user in db.Users)
+            {
+                if (user.UserId == userId)
+                {
+                    foundUser = user;
+                }
+
+            }
+            return foundUser;
         }
     }
 }
