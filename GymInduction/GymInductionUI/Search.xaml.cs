@@ -46,7 +46,7 @@ namespace GymInductionUI
             this.instructor = user;
             InitializeComponent();
             lstClientDetails.Items.Refresh();
-            MessageBox.Show(user.Username.ToString());
+            
 
         }
 

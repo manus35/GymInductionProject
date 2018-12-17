@@ -92,7 +92,7 @@ namespace GymInductionUI
                 if (saveStatus == 1)
                 {
                     MessageBox.Show("User saved Successfully.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Information);
-                    //CreateLogEntry("Database", "User Saved Successfully", currentLoggedOnUser.UserId, currentLoggedOnUser.Username);
+                    CreateLogEntry("Database", "Successfully saved", currentLoggedOnUser.UserId, currentLoggedOnUser.Username,user);
                     refreshUserList();
                     clearUserDetails();
                     stkUserDetails.Visibility = Visibility.Collapsed;
@@ -100,11 +100,12 @@ namespace GymInductionUI
                 else
                 {
                     MessageBox.Show("Problem saving User record.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    //CreateLogEntry("Database", "Problem Saving User Record", currentLoggedOnUser.UserId, currentLoggedOnUser.Username);
+                    CreateLogEntry("Database", "saving problem", currentLoggedOnUser.UserId, currentLoggedOnUser.Username,user);
                 }
             }
             if (dbOperation == DBOperation.Modify)
             {
+                User userMod = new User();
                 foreach (var user in db.Users.Where(t => t.UserId == selectedUser.UserId))
                 {
                     user.FirstName = tbxFirstName.Text.Trim();
@@ -112,12 +113,13 @@ namespace GymInductionUI
                     user.Password = tbxPassword.Text.Trim();
                     user.Username = tbxUsername.Text.Trim();
                     user.LevelId = cmbAccessLevel.SelectedIndex;
+                    userMod = user;
                 }
                 int saveSuccess = db.SaveChanges();
                 if (saveSuccess == 1)
                 {
                     MessageBox.Show("User Modified Successfully.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Information);
-                    //CreateLogEntry("Database", "User Modified Successfully", currentLoggedOnUser.UserId, currentLoggedOnUser.Username);
+                    CreateLogEntry("Database", "successfully modified", currentLoggedOnUser.UserId, currentLoggedOnUser.Username, userMod);
                     refreshUserList();
                     clearUserDetails();
                     stkUserDetails.Visibility = Visibility.Collapsed;
@@ -125,7 +127,7 @@ namespace GymInductionUI
                 else
                 {
                     MessageBox.Show("Problem Modifying User record.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Warning);
-                   // CreateLogEntry("Database", "Problem modifying User", currentLoggedOnUser.UserId, currentLoggedOnUser.Username);
+                    CreateLogEntry("Database", "Modifying problem", currentLoggedOnUser.UserId, currentLoggedOnUser.Username, userMod);
                 }
 
             }
@@ -229,12 +231,13 @@ namespace GymInductionUI
 
         private void submenuDelUser_Click(object sender, RoutedEventArgs e)
         {
+            
             db.Users.RemoveRange(db.Users.Where(t => t.UserId == selectedUser.UserId));
             int saveSuccess = db.SaveChanges();
             if (saveSuccess == 1)
             {
                 MessageBox.Show("User Deleted Successfully.", "Delete from Database", MessageBoxButton.OK, MessageBoxImage.Information);
-                CreateLogEntry("Database", "Successful User Delete", currentLoggedOnUser.UserId, currentLoggedOnUser.Username);
+                CreateLogEntry("Database", "Successfully deleted", currentLoggedOnUser.UserId, currentLoggedOnUser.Username,selectedUser);
                 refreshUserList();
                 clearUserDetails();
                 stkUserDetails.Visibility = Visibility.Collapsed;
@@ -242,7 +245,7 @@ namespace GymInductionUI
             else
             {
                 MessageBox.Show("Problem Deleting User record.", "Delete Database", MessageBoxButton.OK, MessageBoxImage.Warning);
-               //CreateLogEntry("Database", "Problem Deleting User", currentLoggedOnUser.UserId, currentLoggedOnUser.Username);
+               CreateLogEntry("Database", "Deleting problem", currentLoggedOnUser.UserId, currentLoggedOnUser.Username,selectedUser);
             }
 
 
@@ -367,9 +370,23 @@ namespace GymInductionUI
             }
         }
 
-        private void CreateLogEntry(String category, String description, int userId, String username)
+        /// <summary>
+        /// Creates a log entry for any action performed on a user such as add,modify and delete
+        /// </summary>
+        /// <param name="category">
+        /// Caegory of log to be recorded</param>
+        /// <param name="description">
+        /// description of the log to be recorded including action and what performed on</param>
+        /// <param name="userId">
+        /// userid of user performing the action</param>
+        /// <param name="username">
+        /// username of user performing the action</param>
+        /// <param name="performedUser">
+        /// Object that the user performed the action on</param>
+        private void CreateLogEntry(String category, String description, int userId, String username,User performedUser)
         {
-            string comment = $"{description} user credentials  = {username}";
+            string comment = $" {performedUser.Username} {description} by the user  = {username}";
+                
             Log log = new Log();
             if (userId > 0)
             {
@@ -378,25 +395,24 @@ namespace GymInductionUI
             log.Category = category;
             log.Description = comment;
             log.Date = DateTime.Now;
-            saveLog(log);
-            /*
-            if (userId > 0)
-            { 
-            log.UserId = userId;
-            }
-            log.Category = category;
-            log.Description = comment;
-            log.Date = DateTime.Now;
-            saveLog(log);
-            */
+            saveLogRecord(log);
+            
         }
 
-        private void saveLog(Log log)
+        private int saveLogRecord(GymLibrary.Log log)
         {
-            db.Entry(log).State = System.Data.Entity.EntityState.Added;
+            int saveSuccess = 0;
+            try
+            {
+                db.Entry(log).State = System.Data.Entity.EntityState.Added;
+                saveSuccess = db.SaveChanges();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Error saving Log record.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Error);
 
-            db.SaveChanges();
-
+            }
+            return saveSuccess;
         }
 
         private User findUserByUserId(int userId)

@@ -43,7 +43,7 @@ namespace GymInductionUI
                 if(validatedUser.UserId>0)
                 {
 
-                    CreateLogEntry("Login", "User loged In", validatedUser.UserId, validatedUser.Username);
+                    CreateLogEntry("Login", "Success for", validatedUser.UserId, validatedUser.Username);
                     Dashboard dashboard = new Dashboard();
                     dashboard.user = validatedUser;
                     dashboard.Owner = this;
@@ -53,14 +53,14 @@ namespace GymInductionUI
                 else
                 {
                     MessageBox.Show("The credentials you entered do not exist on the Database. Please check and try again.","User Login",MessageBoxButton.OK,MessageBoxImage.Error);
-                    CreateLogEntry("Login", "User login Unsuccessful", 0, "Credentials: "+currentUser+"/"+currentPassword);
+                    CreateLogEntry("Login", "Failure for", 0, "Credentials: "+currentUser+"/"+currentPassword);
                 }
                 
             }
             else
             {
                 MessageBox.Show("Invalid Username or Password. Please check and try again.", "User Login", MessageBoxButton.OK, MessageBoxImage.Error);
-                CreateLogEntry("Login", "User login Unsuccessful", 0, "Credentials: " + currentUser + "/" + currentPassword);
+                CreateLogEntry("Login", "Invalid for", 0, "Credentials: " + currentUser + "/" + currentPassword);
             }
            
            
@@ -70,28 +70,37 @@ namespace GymInductionUI
 
         public void CreateLogEntry(String category, String description, int userId, String username)
         {
-            string comment = "";
-            
-            comment = $"{description} user credentials  = {username}";
-          
             Log log = new Log();
-            if (userId > 0)
-            { 
-            log.UserId = userId;
-                
+
+            string comment = "";
+            if (userId >= 0)
+            {
+                comment = $"{description} user   = {username}";
+               
+                log.Category = category;
+                log.Description = comment;
+                log.UserId = userId;
+                log.Date = DateTime.Now;
+                int success = saveLogRecord(log);
             }
-            log.Category = category;
-            log.Description = comment;
-            log.Date = DateTime.Now;
-            saveLog(log);
-           
+            
+
         }
 
-        public void saveLog(Log log)
+        private int saveLogRecord(GymLibrary.Log log)
         {
-            
+            int saveSuccess = 0;
+            try
+            {
                 db.Entry(log).State = System.Data.Entity.EntityState.Added;
-                db.SaveChanges();                 
+                saveSuccess = db.SaveChanges();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Error saving Log record.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Error);
+                
+            }
+            return saveSuccess;
         }
 
         private void btnClose_Click(object sender, RoutedEventArgs e)

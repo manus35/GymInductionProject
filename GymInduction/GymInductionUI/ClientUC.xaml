@@ -468,11 +468,6 @@
                             <ListView.ContextMenu>
                                 <ContextMenu Name="mnuEvaluationListOverview" IsEnabled="True" >
                                     <ContextMenu.Items>
-                                        <MenuItem Header="Add Evaluation Results"   Name="submenuAddEvaluation" IsEnabled="True" Click="submenuAddEvaluation_Click">
-                                            <MenuItem.Icon>
-                                                <Image Source="images/add.png" />
-                                            </MenuItem.Icon>
-                                        </MenuItem>
                                         <MenuItem Header="Modify Evaluation Results" Name="submenuModEvaluation" IsEnabled="True" Click="submenuModEvaluation_Click">
                                             <MenuItem.Icon>
                                                 <Image Source="images/edit.png"  />

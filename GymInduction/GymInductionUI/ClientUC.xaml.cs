@@ -84,7 +84,7 @@ namespace GymInductionUI
                 if (delSuccess == 1)
                 {
                     MessageBox.Show("Client Deleted Successfully.", "Delete from Database", MessageBoxButton.OK, MessageBoxImage.Information);
-                    //CreateLogEntry("Database", "Client deleted Successfully", currentUser.UserId, currentUser.Username);
+                    CreateLogEntry("Database", "Client deleted Successfully", currentUser.UserId, currentUser.Username,selectedClient);
                     refreshListViews();
                     clearClientDetails();
                     stkClientDetails.Visibility = Visibility.Collapsed;
@@ -93,7 +93,7 @@ namespace GymInductionUI
                 else
                 {
                     MessageBox.Show("Problem Deleting Client record.", "Delete Database", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    CreateLogEntry("Database", "Problem deleting client", currentUser.UserId, currentUser.Username);
+                    CreateLogEntry("Database", "Problem deleting client", currentUser.UserId, currentUser.Username,selectedClient);
                 }
             }
             else
@@ -114,7 +114,7 @@ namespace GymInductionUI
                         if (delSuccess == 1)
                         {
                             MessageBox.Show("Client Deleted Successfully.", "Delete from Database", MessageBoxButton.OK, MessageBoxImage.Information);
-                            //CreateLogEntry("Database", "Client deleted Successfully", currentUser.UserId, currentUser.Username);
+                            CreateLogEntry("Database", "Client deleted Successfully", currentUser.UserId, currentUser.Username,selectedClient);
                             refreshListViews();
                             clearClientDetails();
                             stkClientDetails.Visibility = Visibility.Collapsed;
@@ -123,7 +123,7 @@ namespace GymInductionUI
                         else
                         {
                             MessageBox.Show("Problem Deleting Client record.", "Delete Database", MessageBoxButton.OK, MessageBoxImage.Warning);
-                            CreateLogEntry("Database", "Problem deleting client", currentUser.UserId, currentUser.Username);
+                            CreateLogEntry("Database", "Problem deleting client", currentUser.UserId, currentUser.Username,selectedClient);
                         }
 
 
@@ -161,20 +161,22 @@ namespace GymInductionUI
                 {
                     refreshListViews();
                     MessageBox.Show("Client saved Successfully.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Information);
-                    CreateLogEntry("Database", "Client save Successfully", currentUser.UserId, currentUser.Username);
+                    CreateLogEntry("Database", "Client save Successfully", currentUser.UserId, currentUser.Username,clientToadd);
                     clearClientDetails();
+                    stkClientDetails.Visibility = Visibility.Collapsed;
 
 
                 }
                 else
                 {
                     MessageBox.Show("Problem saving Client record.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    CreateLogEntry("Database", "Client save problem", currentUser.UserId, currentUser.Username);
+                    CreateLogEntry("Database", "Client save problem", currentUser.UserId, currentUser.Username,clientToadd);
                 }
             }
 
             if (dbOperation == DBOperation.ModifyClient)
             {
+                GymLibrary.Client clientMod = new GymLibrary.Client();
                 foreach (var client in db.Clients.Where(t => t.ClientId == selectedClient.ClientId))
                 {
                     //get  client text input
@@ -184,12 +186,13 @@ namespace GymInductionUI
                     client.DateOfBirth = Convert.ToDateTime(tbxDateOfBirth.Text.Trim());
                     client.PhoneNumber = Convert.ToInt32(tbxPhoneNumber.Text.Trim());
                     client.Gender = tbxGender.Text.Trim();
+                    clientMod = client;
                 }
                 int saveSuccess = db.SaveChanges();
                 if (saveSuccess == 1)
                 {
                     MessageBox.Show("Client Modified Successfully.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Information);
-                    CreateLogEntry("Database", "Client Modfy Successfull", currentUser.UserId, currentUser.Username);
+                    CreateLogEntry("Database", "Client Modfy Successfull", currentUser.UserId, currentUser.Username, clientMod);
                     refreshListViews(); 
                     clearClientDetails();
                     stkClientDetails.Visibility = Visibility.Collapsed;
@@ -197,7 +200,7 @@ namespace GymInductionUI
                 else
                 {
                     MessageBox.Show("Problem Modifying Client record.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    CreateLogEntry("Database", "Client Modify problem", currentUser.UserId, currentUser.Username);
+                    CreateLogEntry("Database", "Client Modify problem", currentUser.UserId, currentUser.Username, clientMod);
                 }
 
             }
@@ -221,7 +224,7 @@ namespace GymInductionUI
             catch (Exception)
             {
                 MessageBox.Show("Error saving Client record.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Error);
-                CreateLogEntry("Database", "Client save Error", currentUser.UserId, currentUser.Username);
+                
             }
             return saveSuccess;
         }
@@ -343,7 +346,7 @@ namespace GymInductionUI
         {
             validated = true;
 
-            if (tbxHeight.Text.Length == 0 || tbxHeight.Text.Length > 6)
+            if (tbxHeight.Text.Length == 0 || tbxHeight.Text.Length > 7)
             {
                 validated = false;
             }
@@ -353,7 +356,7 @@ namespace GymInductionUI
                 validated = false;
             }
            
-            if (tbxWeight.Text.Length == 0 || tbxWeight.Text.Length > 5)
+            if (tbxWeight.Text.Length == 0 || tbxWeight.Text.Length > 7)
             {
                 validated = false;
             }
@@ -361,7 +364,7 @@ namespace GymInductionUI
             {
                 validated = false;
             }
-            if (tbxBoodPressure.Text.Length == 0 || tbxBoodPressure.Text.Length > 10)
+            if (tbxBoodPressure.Text.Length == 0 || tbxBoodPressure.Text.Length > 7)
             {
                 validated = false;
             }
@@ -780,6 +783,7 @@ namespace GymInductionUI
                         refreshListViews();
                         MessageBox.Show("Induction saved Successfully.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Information);
                         clearInductionDetails();
+                        stkClientDetails.Visibility = Visibility.Collapsed;
                         stkIndDetails.Visibility = Visibility.Collapsed;
                         refreshInstructorList();
 
@@ -828,6 +832,7 @@ namespace GymInductionUI
                         refreshInstructorList();
                         clearInductionDetails();
                         stkClientDetails.Visibility = Visibility.Collapsed;
+                        stkIndDetails.Visibility = Visibility.Collapsed;
                     }
                     else
                     {
@@ -839,14 +844,23 @@ namespace GymInductionUI
 
         }
 
-        private void submenuAddEvaluation_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
+       
 
         private void submenuModEvaluation_Click(object sender, RoutedEventArgs e)
         {
-
+            dbOperation = DBOperation.ModifyEvaluation;
+            cmbEvlInsId.Items.Refresh();
+            stkEvaluationDetails.Visibility = Visibility.Visible;
+            tbxEvlClientId.Text = selectedEvaluation.ClientId.ToString();
+            tbxHeight.Text = selectedEvaluation.Height.ToString();
+            tbxWeight.Text = selectedEvaluation.Weight.ToString();
+            tbxHeartRate.Text = selectedEvaluation.HeartRate.ToString();
+            tbxBoodPressure.Text = selectedEvaluation.BloodPressure;
+            tbxBMI.Text = selectedEvaluation.BMI.ToString();
+            tbxGoal.Text = selectedEvaluation.Goal;
+            tbxCondition.Text = selectedEvaluation.Condition;
+            int evlFound = findInstructorId(selectedClient.ClientId);
+            cmbEvlInsId.SelectedIndex = evlFound;
         }
 
         private void submenuDelEvaluation_Click(object sender, RoutedEventArgs e)
@@ -903,7 +917,7 @@ namespace GymInductionUI
 
             if (!clientMatch)
             {
-                MessageBox.Show("Client does not exist in Database. Please add client details before adding Induction", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Client does not exist in Database. Please add client details before adding Evaluation", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
 
@@ -949,7 +963,8 @@ namespace GymInductionUI
             
             if (dbOperation == DBOperation.ModifyEvaluation && clientMatch)
             {
-                
+                MessageBox.Show("In Modeval");
+
                 //find evaluations with client id
                 clientIdToMatch = Convert.ToInt32(tbxEvlClientId.Text.Trim());
                 foreach (var evaluation in db.Evaluations)
@@ -1089,20 +1104,20 @@ namespace GymInductionUI
 
         private void submenuEvaluation_Click(object sender, RoutedEventArgs e)
         {
+            //track if  there is an evaluation record already 
+            bool foundAEvaluation = false;
             stkEvaluationDetails.Visibility = Visibility.Visible;
             cmbEvlInsId.Items.Refresh();
-            if (currentUser.UserId != 2)
-            {
-                checkUserAccess(currentUser);
-            }
+            
 
             dbOperation = DBOperation.AddEvaluation;
             tbxEvlClientId.Text = selectedClient.ClientId.ToString();
-            
+
             foreach (var evl in db.Evaluations)
             {
                 if (evl.ClientId == selectedClient.ClientId)
                 {
+                    foundAEvaluation = true;
                     dbOperation = DBOperation.ModifyEvaluation;
                     tbxEvlClientId.Text = selectedClient.ClientId.ToString();
                     tbxHeight.Text = evl.Height.ToString();
@@ -1112,16 +1127,24 @@ namespace GymInductionUI
                     tbxBMI.Text = evl.BMI.ToString();
                     tbxGoal.Text = evl.Goal.ToString();
                     tbxCondition.Text = evl.Condition.ToString();
-
-
-                    int evlFound = findEvlInstructorId(selectedClient.ClientId);
-
-                   
+                    int evlFound = findInstructorId(selectedClient.ClientId);
                     cmbEvlInsId.SelectedIndex = evlFound;
-                    //MessageBox.Show("in sc.hedule in "+(insFound).ToString());
+                    
                 }
             }
-
+                //If no evaluation exists we want to set selected index of combobox to assigned instructor during induction
+                if(foundAEvaluation == false)
+                {
+                    foreach (var ind in db.Inductions)
+                    {
+                        if (ind.ClientId == selectedClient.ClientId)
+                        {
+                            int evlFound = findInstructorId(selectedClient.ClientId);
+                            cmbEvlInsId.SelectedIndex = evlFound;
+                        }
+                    }
+                }
+            //navigate to evaluation tab
             tabClient.SelectedItem = tbiEvaluation;
             tbiEvaluation.Focus();
         }
@@ -1212,9 +1235,23 @@ namespace GymInductionUI
             }
         }
 
-        private void CreateLogEntry(String category, String description, int userId, String username)
+        /// <summary>
+        /// Creates a log entry for any action performed on a client such as add,modify and delete
+        /// </summary>
+        /// <param name="category">
+        /// Caegory of log to be recorded</param>
+        /// <param name="description">
+        /// description of the log to be recorded including action and what performed on</param>
+        /// <param name="userId">
+        /// userid of user performing the action</param>
+        /// <param name="username">
+        /// username of user performing the action</param>
+        /// <param name="performedClient">
+        /// Object that the user performed the action on</param>     
+        private void CreateLogEntry(String category, String description, int userId, String username, GymLibrary.Client performedClient)
         {
-            string comment = ""+(description) +""+" user credentials  ="+ (username);
+            string comment = $"Client {performedClient.FullName} {description} by the user  = {username}";
+
             Log log = new Log();
             if (userId > 0)
             {
@@ -1223,18 +1260,25 @@ namespace GymInductionUI
             log.Category = category;
             log.Description = comment;
             log.Date = DateTime.Now;
-            saveLog(log);
-           
+            saveLogRecord(log);
+
         }
 
-        private void saveLog(Log log)
+        private int saveLogRecord(GymLibrary.Log log)
         {
-            db.Entry(log).State = System.Data.Entity.EntityState.Added;
+            int saveSuccess = 0;
+            try
+            {
+                db.Entry(log).State = System.Data.Entity.EntityState.Added;
+                saveSuccess = db.SaveChanges();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Error saving Log record.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Error);
 
-            db.SaveChanges();
-
+            }
+            return saveSuccess;
         }
-
 
     }
            

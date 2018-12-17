@@ -62,8 +62,8 @@
             <PropertyRef Name="LogId" />
           </Key>
           <Property Name="LogId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Category" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="Description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Category" Type="varchar" MaxLength="35" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="80" Nullable="false" />
           <Property Name="Date" Type="datetime" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
         </EntityType>
@@ -338,8 +338,8 @@
             <PropertyRef Name="LogId" />
           </Key>
           <Property Name="LogId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Category" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Category" Type="String" Nullable="false" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
           <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UserId" Type="Int32" Nullable="false" />
         </EntityType>
