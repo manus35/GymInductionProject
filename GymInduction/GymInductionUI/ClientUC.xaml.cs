@@ -27,6 +27,10 @@ namespace GymInductionUI
         GymDbEntities db = new GymDbEntities("metadata=res://*/GymModel.csdl|res://*/GymModel.ssdl|res://*/GymModel.msl;provider = System.Data.SqlClient; provider connection string='data source = 192.168.1.110; initial catalog = GymDb; user id = GymUser; password=Pass.00*;pooling=False;MultipleActiveResultSets=True;App=EntityFramework'");
         ClientProcess clientProcess = new ClientProcess();
 
+        //logging service
+        LoggingProcess loggingProcess = new LoggingProcess();
+        Log logtoSave = new Log();
+
 
         //instance variables
         int delSuccess;
@@ -84,7 +88,8 @@ namespace GymInductionUI
                 if (delSuccess == 1)
                 {
                     MessageBox.Show("Client Deleted Successfully.", "Delete from Database", MessageBoxButton.OK, MessageBoxImage.Information);
-                    CreateLogEntry("Database", "Client deleted Successfully", currentUser.UserId, currentUser.Username,selectedClient);
+                    logtoSave = loggingProcess.CreateClientLogEntry("Database", "deleted Successfully", currentUser.UserId, currentUser.Username,selectedClient);
+                    saveLogRecord(logtoSave);
                     refreshListViews();
                     clearClientDetails();
                     stkClientDetails.Visibility = Visibility.Collapsed;
@@ -93,7 +98,8 @@ namespace GymInductionUI
                 else
                 {
                     MessageBox.Show("Problem Deleting Client record.", "Delete Database", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    CreateLogEntry("Database", "Problem deleting client", currentUser.UserId, currentUser.Username,selectedClient);
+                    logtoSave = loggingProcess.CreateClientLogEntry("Database", "Problem deleting", currentUser.UserId, currentUser.Username,selectedClient);
+                    saveLogRecord(logtoSave);
                 }
             }
             else
@@ -114,7 +120,8 @@ namespace GymInductionUI
                         if (delSuccess == 1)
                         {
                             MessageBox.Show("Client Deleted Successfully.", "Delete from Database", MessageBoxButton.OK, MessageBoxImage.Information);
-                            CreateLogEntry("Database", "Client deleted Successfully", currentUser.UserId, currentUser.Username,selectedClient);
+                            logtoSave = loggingProcess.CreateClientLogEntry("Database", "deleted Successfully", currentUser.UserId, currentUser.Username,selectedClient);
+                            saveLogRecord(logtoSave);
                             refreshListViews();
                             clearClientDetails();
                             stkClientDetails.Visibility = Visibility.Collapsed;
@@ -123,7 +130,8 @@ namespace GymInductionUI
                         else
                         {
                             MessageBox.Show("Problem Deleting Client record.", "Delete Database", MessageBoxButton.OK, MessageBoxImage.Warning);
-                            CreateLogEntry("Database", "Problem deleting client", currentUser.UserId, currentUser.Username,selectedClient);
+                            logtoSave = loggingProcess.CreateClientLogEntry("Database", "Problem deleting", currentUser.UserId, currentUser.Username,selectedClient);
+                            saveLogRecord(logtoSave);
                         }
 
 
@@ -161,7 +169,8 @@ namespace GymInductionUI
                 {
                     refreshListViews();
                     MessageBox.Show("Client saved Successfully.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Information);
-                    CreateLogEntry("Database", "Client save Successfully", currentUser.UserId, currentUser.Username,clientToadd);
+                    logtoSave = loggingProcess.CreateClientLogEntry("Database", "saved Successfully", currentUser.UserId, currentUser.Username,clientToadd);
+                    saveLogRecord(logtoSave);
                     clearClientDetails();
                     stkClientDetails.Visibility = Visibility.Collapsed;
 
@@ -170,7 +179,8 @@ namespace GymInductionUI
                 else
                 {
                     MessageBox.Show("Problem saving Client record.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    CreateLogEntry("Database", "Client save problem", currentUser.UserId, currentUser.Username,clientToadd);
+                    logtoSave = loggingProcess.CreateClientLogEntry("Database", "Client save problem", currentUser.UserId, currentUser.Username,clientToadd);
+                    saveLogRecord(logtoSave);
                 }
             }
 
@@ -192,7 +202,8 @@ namespace GymInductionUI
                 if (saveSuccess == 1)
                 {
                     MessageBox.Show("Client Modified Successfully.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Information);
-                    CreateLogEntry("Database", "Client Modfy Successfull", currentUser.UserId, currentUser.Username, clientMod);
+                    logtoSave = loggingProcess.CreateClientLogEntry("Database", "Client Modfy Successfull", currentUser.UserId, currentUser.Username, clientMod);
+                    saveLogRecord(logtoSave);
                     refreshListViews(); 
                     clearClientDetails();
                     stkClientDetails.Visibility = Visibility.Collapsed;
@@ -200,18 +211,12 @@ namespace GymInductionUI
                 else
                 {
                     MessageBox.Show("Problem Modifying Client record.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    CreateLogEntry("Database", "Client Modify problem", currentUser.UserId, currentUser.Username, clientMod);
+                    logtoSave = loggingProcess.CreateClientLogEntry("Database", "Modify problem", currentUser.UserId, currentUser.Username, clientMod);
+                    saveLogRecord(logtoSave);
                 }
 
             }
         }
-
-
-
-
-
-
-
 
             private int saveClientRecord(GymLibrary.Client clientToSave)
         {
@@ -223,8 +228,7 @@ namespace GymInductionUI
             }
             catch (Exception)
             {
-                MessageBox.Show("Error saving Client record.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Error);
-                
+                MessageBox.Show("Error saving Client record.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Error);               
             }
             return saveSuccess;
         }
@@ -447,10 +451,6 @@ namespace GymInductionUI
             cmbEvlInsId.Items.Refresh();
         }
 
-       
-
-
-
         private void submenuAddClient_Click(object sender, RoutedEventArgs e)
         {
             stkClientDetails.Visibility = Visibility.Visible;
@@ -578,93 +578,7 @@ namespace GymInductionUI
             }
 
         }
-        /// <summary>
-        /// Links and joins tables from the db for listviews
-        /// </summary>
-        /// <param name="inductionId">
-        /// id of induction holds clientid and instructorid
-        /// </param>
         
-        /// <returns>
-        /// void sets Listviews of client,induction,evaluation tabs
-        /// </returns>
-        private void populateClientTabs(int inductionId)
-        {
-            var allClientInfo = from _induction in db.Inductions.Where(t => t.InductionId == inductionId)
-
-                                join _client in db.Clients on _induction.ClientId equals _client.ClientId
-                                join _evaluation in db.Evaluations on _induction.ClientId equals _evaluation.ClientId
-                                join _instructor in db.Instructors on _induction.InstructorId equals _instructor.InstructorId
-
-                                select new
-                                {
-                                    _client.ClientId,
-                                    _client.FirstName,
-                                    _client.LastName,
-                                    _client.PhoneNumber,
-                                    _client.Gender,
-                                    _client.DateOfBirth,
-                                    _induction.Date,
-                                    _induction.InductionId,
-                                    _induction.Time,
-                                    _induction.Status,
-                                    _instructor.FName,
-                                     _instructor.LName,
-                                    _instructor.InstructorId,
-                                    
-                                    _evaluation.EvaluationId,
-                                    _evaluation.Height,
-                                    _evaluation.Weight,
-                                    _evaluation.HeartRate,
-                                    _evaluation.BloodPressure,
-                                    _evaluation.Goal,
-                                    _evaluation.Condition,
-                                    _evaluation.BMI
-
-                                };
-
-            foreach (var record in allClientInfo)
-            {
-                if (record.ClientId > 0)
-                {
-                    checkUserAccess(currentUser);
-
-
-                    tbxPhoneNumber.Text = record.PhoneNumber.ToString();
-                    tbxFirstName.Text = record.FirstName;
-                    tbxLastName.Text = record.LastName;
-                    tbxGender.Text = record.Gender;
-                     tbxDateOfBirth.Text = Convert.ToString(record.DateOfBirth);
-                }
-                if (record.InductionId > 0)
-                {
-                    checkUserAccess(currentUser);
-                    tbxDate.Text = record.Date.ToString();
-                    tbxTime.Text = record.Time.ToString();
-                    tbxStatus.Text = record.Status;
-                    
-
-
-
-                }
-                
-                
-                if (record.EvaluationId > 0)
-                {
-                    checkUserAccess(currentUser);
-                    tbxBoodPressure.Text = record.BloodPressure;
-                    tbxHeartRate.Text = record.HeartRate.ToString();
-                    tbxHeight.Text = record.Height.ToString();
-                    tbxWeight.Text = record.Weight.ToString();
-                    tbxCondition.Text = record.Condition;
-                    tbxGoal.Text = record.Goal;
-                    tbxBMI.Text = record.BMI.ToString();
-                }
-
-            }
-
-
-                }
 
        
 
@@ -691,14 +605,13 @@ namespace GymInductionUI
             cmbIndInsId.Items.Refresh();
             refreshInstructorList();
             stkIndDetails.Visibility = Visibility.Visible;
-            //stkEvaluationDetails.Visibility = Visibility.Visible;
+            
             selectedInduction = inductions.ElementAt(lstIndDetails.SelectedIndex);
             dbOperation = DBOperation.ModifyInduction;
             tbxDate.Text = selectedInduction.Date.ToString();
             tbxTime.Text = selectedInduction.Time.ToString();
             tbxStatus.Text = selectedInduction.Status;
-            tbxIndClientId.Text = selectedInduction.ClientId.ToString();
-            //cmbIndInsId.SelectedIndex = selectedInduction.InstructorId+1;
+            tbxIndClientId.Text = selectedInduction.ClientId.ToString();     
             int insFound = findInstructorId(selectedInduction.ClientId);
             cmbIndInsId.SelectedIndex = insFound;
         }
@@ -710,6 +623,8 @@ namespace GymInductionUI
             if (saveSuccess == 1)
             {
                 MessageBox.Show("Induction Record Deleted Successfully.", "Delete from Database", MessageBoxButton.OK, MessageBoxImage.Information);
+                logtoSave = loggingProcess.CreateInductionLogEntry("Database", "Delete Success", currentUser.UserId, currentUser.Username, selectedInduction);
+                saveLogRecord(logtoSave);
                 refreshListViews();
                 clearInductionDetails();
                 refreshInstructorList();
@@ -718,6 +633,8 @@ namespace GymInductionUI
             else
             {
                 MessageBox.Show("Problem Deleting Induction record.", "Delete Database", MessageBoxButton.OK, MessageBoxImage.Warning);
+                logtoSave = loggingProcess.CreateInductionLogEntry("Database", "Delete Failure", currentUser.UserId, currentUser.Username, selectedInduction);
+                saveLogRecord(logtoSave);
             }
 
 
@@ -766,22 +683,21 @@ namespace GymInductionUI
 
 
                     //get  Induction text input
-
                     GymLibrary.Induction inductionToAdd = new GymLibrary.Induction();
                     inductionToAdd.ClientId = Convert.ToInt32(tbxIndClientId.Text.Trim());
-
                     inductionToAdd.InstructorId = cmbIndInsId.SelectedIndex+1;
                     
                     inductionToAdd.Date = Convert.ToDateTime(tbxDate.Text.Trim());
                     inductionToAdd.Time = TimeSpan.Parse(tbxTime.Text.Trim());
                     inductionToAdd.Status = tbxStatus.Text.Trim();
 
-
                     int indSaved = saveInductionRecord(inductionToAdd); 
                     if (indSaved == 1)
                     {
                         refreshListViews();
                         MessageBox.Show("Induction saved Successfully.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Information);
+                        logtoSave = loggingProcess.CreateInductionLogEntry("Database", "Save Successful", currentUser.UserId, currentUser.Username, inductionToAdd);
+                        saveLogRecord(logtoSave);
                         clearInductionDetails();
                         stkClientDetails.Visibility = Visibility.Collapsed;
                         stkIndDetails.Visibility = Visibility.Collapsed;
@@ -794,11 +710,14 @@ namespace GymInductionUI
                     else
                     {
                         MessageBox.Show("Problem saving Induction record.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        logtoSave = loggingProcess.CreateInductionLogEntry("Database", "Save Problem", currentUser.UserId, currentUser.Username, inductionToAdd);
+                        saveLogRecord(logtoSave);
                     }
                 }
 
                 if (dbOperation == DBOperation.ModifyInduction && clientMatch)
                 {
+                    Induction inducMod = new Induction();
                     //find inductions with client id
                     clientIdToMatch = Convert.ToInt32(tbxIndClientId.Text.Trim());
                     foreach (var induction in db.Inductions)
@@ -820,6 +739,7 @@ namespace GymInductionUI
                         induction.Date = Convert.ToDateTime(tbxDate.Text.Trim());
                         induction.Time = TimeSpan.Parse(tbxTime.Text.Trim());
                         induction.Status = tbxStatus.Text.Trim();
+                        inducMod = induction;
 
                     }
                     int saveSuccess = db.SaveChanges();
@@ -827,6 +747,8 @@ namespace GymInductionUI
                     if (saveSuccess == 1)
                     {
                         MessageBox.Show("Induction Modified Successfully.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Information);
+                        logtoSave = loggingProcess.CreateInductionLogEntry("Database", "Modify Successful", currentUser.UserId, currentUser.Username, inducMod);
+                        saveLogRecord(logtoSave);
                         refreshListViews();
                         clearClientDetails();
                         refreshInstructorList();
@@ -837,6 +759,8 @@ namespace GymInductionUI
                     else
                     {
                         MessageBox.Show("Problem Modifying Induction record.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        logtoSave = loggingProcess.CreateInductionLogEntry("Database", "Modify Problem", currentUser.UserId, currentUser.Username, inducMod);
+                        saveLogRecord(logtoSave);
                     }
 
                 }
@@ -871,6 +795,8 @@ namespace GymInductionUI
                 if (saveSuccess == 1)
                 {
                     MessageBox.Show("Evaluation Record Deleted Successfully.", "Delete from Database", MessageBoxButton.OK, MessageBoxImage.Information);
+                    logtoSave = loggingProcess.CreateEvaluationLogEntry("Database", "Delete Successful", currentUser.UserId, currentUser.Username, selectedEvaluation);
+                    saveLogRecord(logtoSave);
                     refreshListViews();
                     clearEvaluationDetails();
                     refreshInstructorList();
@@ -879,6 +805,8 @@ namespace GymInductionUI
                 else
                 {
                     MessageBox.Show("Problem Deleting Evaluation record.", "Delete Database", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    logtoSave = loggingProcess.CreateEvaluationLogEntry("Database", "Delete Problem", currentUser.UserId, currentUser.Username, selectedEvaluation);
+                    saveLogRecord(logtoSave);
                 }
 
 
@@ -947,6 +875,8 @@ namespace GymInductionUI
                 {
                     refreshListViews();
                     MessageBox.Show("Evaluation saved Successfully.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Information);
+                    logtoSave = loggingProcess.CreateEvaluationLogEntry("Database", "Save Successful", currentUser.UserId, currentUser.Username, evaluationToAdd);
+                    saveLogRecord(logtoSave);
                     clearEvaluationDetails();
                     stkEvaluationDetails.Visibility = Visibility.Collapsed;
                     refreshInstructorList();
@@ -958,12 +888,14 @@ namespace GymInductionUI
                 else
                 {
                     MessageBox.Show("Problem saving Evaluation record.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    logtoSave = loggingProcess.CreateEvaluationLogEntry("Database", "Save Problem", currentUser.UserId, currentUser.Username, selectedEvaluation);
+                    saveLogRecord(logtoSave);
                 }
             }
             
             if (dbOperation == DBOperation.ModifyEvaluation && clientMatch)
             {
-                MessageBox.Show("In Modeval");
+                Evaluation evlMod = new Evaluation();
 
                 //find evaluations with client id
                 clientIdToMatch = Convert.ToInt32(tbxEvlClientId.Text.Trim());
@@ -992,6 +924,7 @@ namespace GymInductionUI
                     double w = Convert.ToDouble(tbxWeight.Text.Trim());
                     double h = Convert.ToDouble(tbxHeight.Text.Trim());
                     evaluation.BMI = calculateBMI(h, w);
+                    evlMod = evaluation;
 
 
                 }
@@ -1000,6 +933,8 @@ namespace GymInductionUI
                 if (saveSuccess == 1)
                 {
                     MessageBox.Show("Evaluation Modified Successfully.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Information);
+                    logtoSave = loggingProcess.CreateEvaluationLogEntry("Database", "Modify Successful", currentUser.UserId, currentUser.Username, evlMod);
+                    saveLogRecord(logtoSave);
                     refreshListViews();
                     clearClientDetails();
                     refreshInstructorList();
@@ -1009,6 +944,8 @@ namespace GymInductionUI
                 else
                 {
                     MessageBox.Show("Problem Modifying Evaluation record.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    logtoSave = loggingProcess.CreateEvaluationLogEntry("Database", "Modify Problem", currentUser.UserId, currentUser.Username, evlMod);
+                    saveLogRecord(logtoSave);
                 }
 
             }
@@ -1248,7 +1185,7 @@ namespace GymInductionUI
         /// username of user performing the action</param>
         /// <param name="performedClient">
         /// Object that the user performed the action on</param>     
-        private void CreateLogEntry(String category, String description, int userId, String username, GymLibrary.Client performedClient)
+        private void CreateClientLogEntry(String category, String description, int userId, String username, GymLibrary.Client performedClient)
         {
             string comment = $"Client {performedClient.FullName} {description} by the user  = {username}";
 

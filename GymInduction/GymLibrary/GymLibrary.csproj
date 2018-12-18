@@ -84,6 +84,7 @@
     <Compile Include="Log.cs">
       <DependentUpon>GymModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="LoggingProcess.cs" />
     <Compile Include="LoginProcess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="User.cs">

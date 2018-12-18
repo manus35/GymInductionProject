@@ -22,7 +22,13 @@ namespace GymInductionUI
     /// </summary>
     public partial class MainWindow : Window
     {
+        //connection string
         GymDbEntities db = new GymDbEntities("metadata=res://*/GymModel.csdl|res://*/GymModel.ssdl|res://*/GymModel.msl;provider = System.Data.SqlClient; provider connection string='data source = 192.168.1.110; initial catalog = GymDb; user id = GymUser; password=Pass.00*;pooling=False;MultipleActiveResultSets=True;App=EntityFramework'");
+
+        //logging service
+        LoggingProcess loggingProcess = new LoggingProcess();
+        Log logtoSave = new Log();
+
         LoginProcess loginProcess = new LoginProcess();
         public MainWindow()
         {
@@ -43,7 +49,8 @@ namespace GymInductionUI
                 if(validatedUser.UserId>0)
                 {
 
-                    CreateLogEntry("Login", "Success for", validatedUser.UserId, validatedUser.Username);
+                    logtoSave = loggingProcess.CreateLoginLogEntry("Login", "Success for", validatedUser.UserId, validatedUser.Username);
+                    saveLogRecord(logtoSave);
                     Dashboard dashboard = new Dashboard();
                     dashboard.user = validatedUser;
                     dashboard.Owner = this;
@@ -53,14 +60,16 @@ namespace GymInductionUI
                 else
                 {
                     MessageBox.Show("The credentials you entered do not exist on the Database. Please check and try again.","User Login",MessageBoxButton.OK,MessageBoxImage.Error);
-                    CreateLogEntry("Login", "Failure for", 0, "Credentials: "+currentUser+"/"+currentPassword);
+                    logtoSave = loggingProcess.CreateLoginLogEntry("Login", "Failure for", 0, "Credentials: "+currentUser+"/"+currentPassword);
+                    saveLogRecord(logtoSave);
                 }
                 
             }
             else
             {
                 MessageBox.Show("Invalid Username or Password. Please check and try again.", "User Login", MessageBoxButton.OK, MessageBoxImage.Error);
-                CreateLogEntry("Login", "Invalid for", 0, "Credentials: " + currentUser + "/" + currentPassword);
+                logtoSave = loggingProcess.CreateLoginLogEntry("Login", "Invalid for", 0, "Credentials: " + currentUser + "/" + currentPassword);
+                saveLogRecord(logtoSave);
             }
            
            
@@ -68,24 +77,7 @@ namespace GymInductionUI
 
         }
 
-        public void CreateLogEntry(String category, String description, int userId, String username)
-        {
-            Log log = new Log();
-
-            string comment = "";
-            if (userId >= 0)
-            {
-                comment = $"{description} user   = {username}";
-               
-                log.Category = category;
-                log.Description = comment;
-                log.UserId = userId;
-                log.Date = DateTime.Now;
-                int success = saveLogRecord(log);
-            }
-            
-
-        }
+        
 
         private int saveLogRecord(GymLibrary.Log log)
         {
@@ -97,7 +89,7 @@ namespace GymInductionUI
             }
             catch (Exception)
             {
-                MessageBox.Show("Error saving Log record.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Error saving Login Log record.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Error);
                 
             }
             return saveSuccess;
