@@ -36,6 +36,7 @@ namespace GymInductionUI
         List<GymLibrary.Client> clients = new List<GymLibrary.Client>();
         List<Evaluation> evaluations = new List<Evaluation>();
         User selectedUser = new User();
+        Instructor instructor = new Instructor();
         User currentLoggedOnUser = new User();
         float avgHr = 0;
         double avgHeight = 0;
@@ -86,7 +87,12 @@ namespace GymInductionUI
                 user.Password = tbxPassword.Text.Trim();
                 user.LevelId = cmbAccessLevel.SelectedIndex;
 
-
+                if(user.LevelId == 3)
+                {
+                    instructor.FName = user.FirstName;
+                    instructor.LName = user.LastName;                   
+                }
+                int insSaveSuccess = saveInstructorRecord(instructor);
                 int saveStatus = saveUser(user);
 
                 if (saveStatus == 1)
@@ -235,8 +241,19 @@ namespace GymInductionUI
 
         private void submenuDelUser_Click(object sender, RoutedEventArgs e)
         {
-            
+            //if the user is instructor, remove instructor from instructor table
+            if (selectedUser.LevelId == 3)
+            {
+                foreach (var instructor in db.Instructors)
+                {
+                    if(instructor.FName == selectedUser.FirstName && instructor.LName == selectedUser.LastName)
+                    {
+                        db.Instructors.Remove(instructor);
+                    }
+                }
+            }
             db.Users.RemoveRange(db.Users.Where(t => t.UserId == selectedUser.UserId));
+            
             int saveSuccess = db.SaveChanges();
             if (saveSuccess == 1)
             {
@@ -278,6 +295,21 @@ namespace GymInductionUI
 
         }
 
+        private int saveInstructorRecord(GymLibrary.Instructor insToSave)
+        {
+            int saveSuccess = 0;
+            try
+            {
+                db.Entry(insToSave).State = System.Data.Entity.EntityState.Added;
+                saveSuccess = db.SaveChanges();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Error saving Instructor record.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            return saveSuccess;
+        }
+
         private void cboChoose_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //check which option is selected greater than 0 are valid
@@ -304,6 +336,25 @@ namespace GymInductionUI
             int recordCount = 0;
             string output = "";
             tbkAnalysis.Text = "";
+            int totalHeartRate = 0;
+            int averageHeartRate = 0;
+            double totalHeight = 0;
+            double averageHeight = 0;
+            double totalWeight = 0;
+            double averageWeight = 0;
+            double totalBMI = 0;
+            double averageBMI = 0;
+            int managerCount = 0;
+            int instructorCount = 0;
+            int adminCount = 0;
+            int nutCount = 0;
+            int dbcatCount = 0;
+            int loginCatCount = 0;
+
+            int evaluationCount = db.Evaluations.Count();
+            int clientCount = db.Clients.Count();
+
+            //summary option
             if (analysisType == AnalysisType.Summary && tableSelected == TableSelected.Client)
             {
                 foreach (var client in clients)
@@ -361,7 +412,7 @@ namespace GymInductionUI
                 foreach (var log in logs)
                 {
                     //find the user with user id logged
-                    
+
                     User logUser = findUserByUserId(log.UserId);
                     recordCount++;
                     output = output + Environment.NewLine + $"Record {recordCount} is for Log created by {logUser.FirstName} {logUser.LastName} " +
@@ -373,6 +424,112 @@ namespace GymInductionUI
                 }
                 output = output + Environment.NewLine + $"Total Logs  in the Database is  {recordCount}." + Environment.NewLine;
                 tbkAnalysis.Text = output;
+            }
+
+            //Count Option
+            if (analysisType == AnalysisType.Count && tableSelected == TableSelected.Client)
+            {
+                foreach (var client in clients)
+                {
+                    recordCount++;
+                }
+                output = output + Environment.NewLine + $"Total Client  Records in the Database  is {recordCount}" + Environment.NewLine;
+                tbkAnalysis.Text = output;
+            }
+
+            if (analysisType == AnalysisType.Count && tableSelected == TableSelected.User)
+            {
+                foreach (var user in users)
+                {
+                    recordCount++;
+                }
+                output = output + Environment.NewLine + $"Total User  Records in the Database  is {recordCount}" + Environment.NewLine;
+                tbkAnalysis.Text = output;
+            }
+
+            if (analysisType == AnalysisType.Count && tableSelected == TableSelected.Log)
+            {
+                foreach (var log in logs)
+                {
+                    recordCount++;
+                }
+                output = output + Environment.NewLine + $"Total Log  Records in the Database  is {recordCount}" + Environment.NewLine;
+                tbkAnalysis.Text = output;
+            }
+
+            //Statistics option
+            if (analysisType == AnalysisType.Statistics && tableSelected == TableSelected.Client)
+            {
+
+                foreach (var evaluation in db.Evaluations)
+                {
+
+                    totalHeight = totalHeight + evaluation.Height;
+                    totalWeight = totalWeight + evaluation.Weight;
+                    totalBMI = totalBMI + evaluation.BMI;
+                    totalHeartRate = totalHeartRate + evaluation.HeartRate;
+
+                }
+                averageHeartRate = totalHeartRate / evaluationCount;
+                averageBMI = totalBMI / evaluationCount;
+                averageHeight = totalHeight / evaluationCount;
+                averageWeight = totalWeight / evaluationCount;
+                output = output + Environment.NewLine + $"The average Heart Rate of evaluated clients is  {averageHeartRate}" + Environment.NewLine;
+                output = output + Environment.NewLine + $"The average Height of evaluated clients is  {averageHeight} Feet" + Environment.NewLine;
+                output = output + Environment.NewLine + $"The average Weight of evaluated clients is  {averageWeight} KG" + Environment.NewLine;
+                output = output + Environment.NewLine + $"The average BMI of evaluated clients is  {averageBMI}" + Environment.NewLine;
+                tbkAnalysis.Text = output;
+            }
+
+            if (analysisType == AnalysisType.Statistics && tableSelected == TableSelected.User)
+            {
+                foreach (var user in users)
+                {
+                    if (user.LevelId == 4)
+                    {
+                        managerCount++;
+                    }
+                    if (user.LevelId == 3)
+                    {
+                        instructorCount++;
+                    }
+                    if (user.LevelId == 1)
+                    {
+                        nutCount++;
+                    }
+                    if (user.LevelId == 2)
+                    {
+                        adminCount++;
+                    }
+
+                }
+                output = output + Environment.NewLine + $"The total number of Manager users is  {managerCount}" + Environment.NewLine;
+                output = output + Environment.NewLine + $"The total number of Instructor users is  {instructorCount}" + Environment.NewLine;
+                output = output + Environment.NewLine + $"The total number of Nutritionist users is  {nutCount}" + Environment.NewLine;
+                output = output + Environment.NewLine + $"The total number of Admin users is  {adminCount}" + Environment.NewLine;
+                
+                tbkAnalysis.Text = output;
+            }
+
+            if (analysisType == AnalysisType.Statistics && tableSelected == TableSelected.Log)
+            {
+                foreach (var log in logs)
+                {
+                    if (string.Equals(log.Category, "database", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        dbcatCount++;
+                    }
+                    if ((string.Equals(log.Category, "login", StringComparison.CurrentCultureIgnoreCase)) || log.Category.Contains("login" ) || log.Category.Contains("Login"))
+                    {
+                        loginCatCount++;
+                    }
+                }
+
+                output = output + Environment.NewLine + $"The total number of Database logs is  {dbcatCount}" + Environment.NewLine;
+                output = output + Environment.NewLine + $"The total number of Login logs is  {loginCatCount}" + Environment.NewLine;
+                tbkAnalysis.Text = output;
+
+
             }
         }
 

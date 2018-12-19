@@ -204,7 +204,7 @@
                                 <Label Grid.Row="0" Grid.Column="1" Content="Please choose Database Table" HorizontalAlignment="Center" FontSize="16" />
 
                                 <!-- row 1 of stackpanel   -->
-                                <ComboBox Name="cboAnalysis" Grid.Row ="1" Grid.Column="0" Width="150" Height="26" Margin="0,10" SelectedIndex="0" SelectionChanged="cboAnalysis_SelectionChanged" ToolTip="Choose your option for what action you want to perform,please note this release only has Analysis" >
+                                <ComboBox Name="cboAnalysis" Grid.Row ="1" Grid.Column="0" Width="150" Height="26" Margin="0,10" SelectedIndex="0" SelectionChanged="cboAnalysis_SelectionChanged" ToolTip="Choose your option for what action you want to perform" >
                                     <ComboBoxItem Content="Please Select" />
                                 <ComboBoxItem Content="Summary" />
                                 <ComboBoxItem Content="Count" />
