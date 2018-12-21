@@ -85,14 +85,8 @@ namespace GymInductionUI
                 user.LastName = tbxLastName.Text.Trim();
                 user.Username = tbxUsername.Text.Trim();
                 user.Password = tbxPassword.Text.Trim();
-                user.LevelId = cmbAccessLevel.SelectedIndex;
-
-                if(user.LevelId == 3)
-                {
-                    instructor.FName = user.FirstName;
-                    instructor.LName = user.LastName;                   
-                }
-                int insSaveSuccess = saveInstructorRecord(instructor);
+                user.LevelId = cmbAccessLevel.SelectedIndex;              
+                
                 int saveStatus = saveUser(user);
 
                 if (saveStatus == 1)
@@ -122,6 +116,10 @@ namespace GymInductionUI
                     user.Username = tbxUsername.Text.Trim();
                     user.LevelId = cmbAccessLevel.SelectedIndex;
                     userMod = user;
+
+                   
+
+
                 }
                 int saveSuccess = db.SaveChanges();
                 if (saveSuccess == 1)
@@ -171,8 +169,7 @@ namespace GymInductionUI
                 avgWeight = avgWeight + evaluation.Weight;
 
             }
-            //int avgAsInt = Convert.ToInt32(avgHr/avgCount);
-            //txbAvgHR.Text ="The average Heart Rate of all inductees is: "+ avgAsInt.ToString();
+            
         }
 
         private void refreshUserList()
@@ -241,19 +238,8 @@ namespace GymInductionUI
 
         private void submenuDelUser_Click(object sender, RoutedEventArgs e)
         {
-            //if the user is instructor, remove instructor from instructor table
-            if (selectedUser.LevelId == 3)
-            {
-                foreach (var instructor in db.Instructors)
-                {
-                    if(instructor.FName == selectedUser.FirstName && instructor.LName == selectedUser.LastName)
-                    {
-                        db.Instructors.Remove(instructor);
-                    }
-                }
-            }
-            db.Users.RemoveRange(db.Users.Where(t => t.UserId == selectedUser.UserId));
             
+            db.Users.RemoveRange(db.Users.Where(t => t.UserId == selectedUser.UserId));          
             int saveSuccess = db.SaveChanges();
             if (saveSuccess == 1)
             {
@@ -306,6 +292,21 @@ namespace GymInductionUI
             catch (Exception)
             {
                 MessageBox.Show("Error saving Instructor record.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            return saveSuccess;
+        }
+
+        private int deleteInstructorRecord(GymLibrary.Instructor insToDel)
+        {
+            int saveSuccess = 0;
+            try
+            {
+                db.Entry(insToDel).State = System.Data.Entity.EntityState.Deleted;
+                saveSuccess = db.SaveChanges();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Error deleting Instructor record.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             return saveSuccess;
         }

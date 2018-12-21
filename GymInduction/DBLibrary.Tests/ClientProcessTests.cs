@@ -34,6 +34,8 @@ namespace DBLibrary.Tests
 
         [Theory]
         [InlineData("jhj", "jjhjh", "09/09/2007", "hjhj","jhjj", true )]
+        [InlineData("Billy", "Murphy", "09/09/1966", "0987656789", "male", true)]
+        [InlineData("Susan", "Fisher", "09/02/1982", "0983456789", "male", true)]       
         public void ValidateClientInput(string tbxFirstName,string tbxLastName,string tbxDateOfBirth,string tbxPhoneNumber,string tbxGender, bool expected)
         {
             //arange
@@ -46,6 +48,27 @@ namespace DBLibrary.Tests
             Assert.True(actual == true);
             Assert.Equal(expected, actual);
         }
+
+        [Theory]
+        [InlineData("jhj", "", "09/09/2007", "hjhj", "jhjj", false)]
+        [InlineData("", "", "09/09/1966", "0987656789", "male", false)]
+        [InlineData("Susan", "Fisherjkjkjiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii" +
+            "hjhjhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh", "09/02/1998", "0983456789", "male", false)]
+        [InlineData("Susan", "Fisher", "09/02/1989987", "0983456789", "male", false)]
+        public void ValidateClientInputFails(string tbxFirstName, string tbxLastName, string tbxDateOfBirth, string tbxPhoneNumber, string tbxGender, bool expected)
+        {
+            //arange
+            ClientProcess clientProcess = new ClientProcess();
+
+            //act
+            bool actual = clientProcess.validateClientInput(tbxFirstName, tbxLastName, tbxDateOfBirth, tbxPhoneNumber, tbxGender);
+
+            //assert
+            Assert.True(actual == false);
+            Assert.Equal(expected, actual);
+        }
+
+
 
         [Fact]
         public void addClientToClientList_ShouldWork()
@@ -66,9 +89,10 @@ namespace DBLibrary.Tests
         }
 
         [Theory]
-        [InlineData(1, "", "hjhj", "09/09/88", 877878, "jhhj", false)]
-        [InlineData(1, "", "hjhj", "09/09/2019", 877878, "jhhj", false)]
-        [InlineData(0, "jhhjh", "hjhj", "09/09/88", 877878, "jhhj", false)]
+        [InlineData(1, "", "burns", "09/09/88", 877878, "jhhj", false)]
+        [InlineData(1, "", "", "09/09/2019", 877878, "jhhj", false)]
+        [InlineData(5, "jim", "", "09/09/88" , 877878, "jhhj", false)]
+        
         public void addClientToClientList_ShouldFail(int ClientId,string FirstName,string LastName,string DateOfBirth,int PhoneNumber,string Gender,bool expected)
         {
             //arrangephase

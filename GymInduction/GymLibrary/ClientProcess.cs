@@ -34,7 +34,8 @@ namespace GymLibrary
             {
                 validated = false;
             }
-            if (tbxDateOfBirth.Length == 0 || tbxDateOfBirth.Length > 30)
+            //in format 12/01/1999 issue with 0000 added when saved
+            if (tbxDateOfBirth.Length == 0 || tbxDateOfBirth.Length > 20)
             {
                 validated = false;
             }
@@ -75,11 +76,12 @@ namespace GymLibrary
             {
                 validated = false;
             }
+            //in format 12/01/1999
             if (tbxDate.Length == 0 || tbxDate.Length > 20)
             {
                 validated = false;
             }
-            if (tbxTime.Length == 0 || tbxTime.Length > 20)
+            if (tbxTime.Length == 0 || tbxTime.Length > 16)
             {
                 validated = false;
             }

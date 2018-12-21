@@ -299,7 +299,8 @@ namespace GymInductionUI
             {
                 validated = false;
             }
-            if (tbxDateOfBirth.Text.Length == 0 || tbxDateOfBirth.Text.Length > 30)
+            //date has max 10 length
+            if (tbxDateOfBirth.Text.Length == 0 || tbxDateOfBirth.Text.Length > 11)
             {
                 validated = false;
             }
@@ -323,13 +324,13 @@ namespace GymInductionUI
             {
                 validated = false;
             }
-            //note,cant find date type max length
-            if (tbxDate.Text.Length == 0 || tbxDate.Text.Length > 20)
+            
+            if (tbxDate.Text.Length == 0 || tbxDate.Text.Length > 11)
             {
                 validated = false;
             }
             //note cant find time max length
-            if (tbxTime.Text.Length == 0 || tbxTime.Text.Length > 20)
+            if (tbxTime.Text.Length == 0 || tbxTime.Text.Length > 16)
             {
                 validated = false;
             }
@@ -350,7 +351,7 @@ namespace GymInductionUI
         {
             validated = true;
 
-            if (tbxHeight.Text.Length == 0 || tbxHeight.Text.Length > 7)
+            if (tbxHeight.Text.Length == 0 || tbxHeight.Text.Length > 8)
             {
                 validated = false;
             }
@@ -360,7 +361,7 @@ namespace GymInductionUI
                 validated = false;
             }
            
-            if (tbxWeight.Text.Length == 0 || tbxWeight.Text.Length > 7)
+            if (tbxWeight.Text.Length == 0 || tbxWeight.Text.Length > 8)
             {
                 validated = false;
             }

@@ -5,10 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GymInductionUI"
         mc:Ignorable="d"
-        WindowState="Normal"
+        WindowState="Maximized"
         WindowStyle="None"
         Loaded="Window_Loaded"
-        Title="Dashboard" Height="450" Width="800">
+        Title="Dashboard" Height="auto" Width="auto" WindowStartupLocation="CenterScreen" >
+
     <Grid>
         <Grid.Background>
             <ImageBrush ImageSource="images/dashback.jpg" Stretch="UniformToFill" Opacity=".04"></ImageBrush>

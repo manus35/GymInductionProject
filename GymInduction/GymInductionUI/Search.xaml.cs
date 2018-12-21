@@ -78,11 +78,7 @@ namespace GymInductionUI
             instructors.Clear();
             clients.Clear();
 
-            //lstClientDetails.ItemsSource = clients;
-            //lstClientDetails.ItemsSource = clients;
-            //lstInductionDetails.ItemsSource = inductions;
-            //lstInstructorDetails.ItemsSource = instructors;
-            //tbxDate.ItemSource = instructors
+           
             foreach (var client in db.Clients)
             {
                 clients.Add(client);
@@ -117,7 +113,7 @@ namespace GymInductionUI
                                   insLname = n.LName
                               };
                 int r = results.Count();
-                MessageBox.Show(r.ToString());
+                
                 lstClientDetails.ItemsSource = results;
 
             }
