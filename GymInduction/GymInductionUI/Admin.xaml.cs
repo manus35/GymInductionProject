@@ -42,6 +42,7 @@ namespace GymInductionUI
         double avgHeight = 0;
         double avgWeight = 0;
         int avgCount = 0;
+        Instructor instructorToMatch = new Instructor();
 
         enum DBOperation
         {
@@ -85,14 +86,22 @@ namespace GymInductionUI
                 user.LastName = tbxLastName.Text.Trim();
                 user.Username = tbxUsername.Text.Trim();
                 user.Password = tbxPassword.Text.Trim();
-                user.LevelId = cmbAccessLevel.SelectedIndex;              
-                
+                user.LevelId = cmbAccessLevel.SelectedIndex;
+
+                //add the instructor to the instructor table
+                if (user.LevelId == 3)
+                {
+                    instructor.FName = user.FirstName;
+                    instructor.LName = user.LastName;
+                }
+                int insSaveSuccess = saveInstructorRecord(instructor);
+
                 int saveStatus = saveUser(user);
 
                 if (saveStatus == 1)
                 {
                     MessageBox.Show("User saved Successfully.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Information);
-                    logtoSave = loggingProcess.CreateAdminLogEntry("Database", "Successfully saved", currentLoggedOnUser.UserId, currentLoggedOnUser.Username,user);
+                    logtoSave = loggingProcess.CreateAdminLogEntry("Database", "Successfully saved", currentLoggedOnUser.UserId, currentLoggedOnUser.Username, user);
                     saveLogRecord(logtoSave);
                     refreshUserList();
                     clearUserDetails();
@@ -101,7 +110,7 @@ namespace GymInductionUI
                 else
                 {
                     MessageBox.Show("Problem saving User record.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    logtoSave = loggingProcess.CreateAdminLogEntry("Database", "saving problem", currentLoggedOnUser.UserId, currentLoggedOnUser.Username,user);
+                    logtoSave = loggingProcess.CreateAdminLogEntry("Database", "saving problem", currentLoggedOnUser.UserId, currentLoggedOnUser.Username, user);
                     saveLogRecord(logtoSave);
                 }
             }
@@ -117,7 +126,7 @@ namespace GymInductionUI
                     user.LevelId = cmbAccessLevel.SelectedIndex;
                     userMod = user;
 
-                   
+
 
 
                 }
@@ -169,7 +178,7 @@ namespace GymInductionUI
                 avgWeight = avgWeight + evaluation.Weight;
 
             }
-            
+
         }
 
         private void refreshUserList()
@@ -238,13 +247,37 @@ namespace GymInductionUI
 
         private void submenuDelUser_Click(object sender, RoutedEventArgs e)
         {
-            
-            db.Users.RemoveRange(db.Users.Where(t => t.UserId == selectedUser.UserId));          
+           
+            //if the user is instructor, remove instructor from instructor table
+            if (selectedUser.LevelId == 3)
+            {
+                foreach (var instructor in db.Instructors)
+                {
+                    if (instructor.FName == selectedUser.FirstName && instructor.LName == selectedUser.LastName)
+                    {
+                        
+                        instructorToMatch = instructor;
+                    }
+                }
+            }
+
+            db.Users.RemoveRange(db.Users.Where(t => t.UserId == selectedUser.UserId));
             int saveSuccess = db.SaveChanges();
             if (saveSuccess == 1)
             {
+                try
+                {
+                    //also remove from instructors database
+                    db.Instructors.RemoveRange(db.Instructors.Where(t => t.InstructorId == instructorToMatch.InstructorId));
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Problem deleting Instructor record.", "Delete Database", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+                
+
                 MessageBox.Show("User Deleted Successfully.", "Delete from Database", MessageBoxButton.OK, MessageBoxImage.Information);
-                logtoSave = loggingProcess.CreateAdminLogEntry("Database", "Successfully deleted", currentLoggedOnUser.UserId, currentLoggedOnUser.Username,selectedUser);
+                logtoSave = loggingProcess.CreateAdminLogEntry("Database", "Successfully deleted", currentLoggedOnUser.UserId, currentLoggedOnUser.Username, selectedUser);
                 saveLogRecord(logtoSave);
                 refreshUserList();
                 clearUserDetails();
@@ -253,7 +286,7 @@ namespace GymInductionUI
             else
             {
                 MessageBox.Show("Problem Deleting User record.", "Delete Database", MessageBoxButton.OK, MessageBoxImage.Warning);
-                logtoSave = loggingProcess.CreateAdminLogEntry("Database", "Deleting problem", currentLoggedOnUser.UserId, currentLoggedOnUser.Username,selectedUser);
+                logtoSave = loggingProcess.CreateAdminLogEntry("Database", "Deleting problem", currentLoggedOnUser.UserId, currentLoggedOnUser.Username, selectedUser);
                 saveLogRecord(logtoSave);
             }
 
@@ -281,7 +314,7 @@ namespace GymInductionUI
 
         }
 
-        private int saveInstructorRecord(GymLibrary.Instructor insToSave)
+       private int saveInstructorRecord(GymLibrary.Instructor insToSave)
         {
             int saveSuccess = 0;
             try
@@ -296,20 +329,7 @@ namespace GymInductionUI
             return saveSuccess;
         }
 
-        private int deleteInstructorRecord(GymLibrary.Instructor insToDel)
-        {
-            int saveSuccess = 0;
-            try
-            {
-                db.Entry(insToDel).State = System.Data.Entity.EntityState.Deleted;
-                saveSuccess = db.SaveChanges();
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Error deleting Instructor record.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            return saveSuccess;
-        }
+       
 
         private void cboChoose_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -508,7 +528,7 @@ namespace GymInductionUI
                 output = output + Environment.NewLine + $"The total number of Instructor users is  {instructorCount}" + Environment.NewLine;
                 output = output + Environment.NewLine + $"The total number of Nutritionist users is  {nutCount}" + Environment.NewLine;
                 output = output + Environment.NewLine + $"The total number of Admin users is  {adminCount}" + Environment.NewLine;
-                
+
                 tbkAnalysis.Text = output;
             }
 
@@ -520,7 +540,7 @@ namespace GymInductionUI
                     {
                         dbcatCount++;
                     }
-                    if ((string.Equals(log.Category, "login", StringComparison.CurrentCultureIgnoreCase)) || log.Category.Contains("login" ) || log.Category.Contains("Login"))
+                    if ((string.Equals(log.Category, "login", StringComparison.CurrentCultureIgnoreCase)) || log.Category.Contains("login") || log.Category.Contains("Login"))
                     {
                         loginCatCount++;
                     }

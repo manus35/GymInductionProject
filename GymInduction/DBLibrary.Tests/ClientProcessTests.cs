@@ -50,11 +50,14 @@ namespace DBLibrary.Tests
         }
 
         [Theory]
-        [InlineData("jhj", "", "09/09/2007", "hjhj", "jhjj", false)]
-        [InlineData("", "", "09/09/1966", "0987656789", "male", false)]
+        [InlineData("", "hjh", "09/09/2007", "hjhj", "jhjj", false)]
+        [InlineData("jkjk", "", "09/09/1966", "0987656789", "male", false)]
+        [InlineData("jkjk", "llk", "", "0987656789", "", false)]
+        [InlineData("bnb", "nmnm", "09/09/1966", "", "", false)]
+        [InlineData("bnb", "nmnm", "09/09/1966", "098989", "", false)]
         [InlineData("Susan", "Fisherjkjkjiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii" +
-            "hjhjhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh", "09/02/1998", "0983456789", "male", false)]
-        [InlineData("Susan", "Fisher", "09/02/1989987", "0983456789", "male", false)]
+            "hjhjhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh", "09/02/19989989888888888889898898888888888888888888888888888888888888", "0983456789", "male", false)]
+        [InlineData("Susan", "Fisher", "09/02/1989987", "", "male", false)]
         public void ValidateClientInputFails(string tbxFirstName, string tbxLastName, string tbxDateOfBirth, string tbxPhoneNumber, string tbxGender, bool expected)
         {
             //arange
