@@ -60,8 +60,10 @@ namespace GymInductionUI
 
         private void btnClient_Click(object sender, RoutedEventArgs e)
         {
+            
             ClientUC client = new ClientUC(user);
             frmMain.Navigate(client);
+            
 
 
         }
@@ -71,7 +73,12 @@ namespace GymInductionUI
             Search search = new Search();
             frmMain.Navigate(search);
         }
-
+        /// <summary>
+        /// Check user access for dashboard buttons 
+        /// and display appropriate to user role
+        /// </summary>
+        /// <param name="user">
+        /// currently logged on user</param>
         private void checkUserAccess(User user)
         {
             if(user.LevelId > 0)

@@ -35,6 +35,7 @@ namespace GymInductionUI
         List<Log> logs = new List<Log>();
         List<GymLibrary.Client> clients = new List<GymLibrary.Client>();
         List<Evaluation> evaluations = new List<Evaluation>();
+        List<Instructor> instructors = new List<Instructor>();
         User selectedUser = new User();
         Instructor instructor = new Instructor();
         User currentLoggedOnUser = new User();
@@ -66,7 +67,7 @@ namespace GymInductionUI
         DBOperation dbOperation = new DBOperation();
         public Admin(User user)
         {
-            currentLoggedOnUser = user;
+            currentLoggedOnUser = user;           
             InitializeComponent();
         }
 
@@ -79,7 +80,7 @@ namespace GymInductionUI
         {
             if (dbOperation == DBOperation.Add)
             {
-
+                
 
                 User user = new User();
                 user.FirstName = tbxFirstName.Text.Trim();
@@ -165,6 +166,10 @@ namespace GymInductionUI
             {
                 logs.Add(log);
             }
+            foreach (var instructor in db.Instructors)
+            {
+                instructors.Add(instructor);
+            }
 
             foreach (var client in db.Clients)
             {
@@ -247,7 +252,8 @@ namespace GymInductionUI
 
         private void submenuDelUser_Click(object sender, RoutedEventArgs e)
         {
-           
+            
+
             //if the user is instructor, remove instructor from instructor table
             if (selectedUser.LevelId == 3)
             {
@@ -314,6 +320,13 @@ namespace GymInductionUI
 
         }
 
+        /// <summary>
+        /// save instructor record to the database
+        /// </summary>
+        /// <param name="insToSave">
+        /// Instructor record to save </param>
+        /// <returns>
+        /// integer value representing failure or success of method</returns>
        private int saveInstructorRecord(GymLibrary.Instructor insToSave)
         {
             int saveSuccess = 0;
@@ -570,6 +583,13 @@ namespace GymInductionUI
             return saveSuccess;
         }
 
+        /// <summary>
+        /// Find specific user using id value
+        /// </summary>
+        /// <param name="userId">
+        /// Integer representing id of user to find</param>
+        /// <returns>
+        /// Matching User if found</returns>
         private User findUserByUserId(int userId)
         {
             User foundUser = new User();
@@ -583,5 +603,7 @@ namespace GymInductionUI
             }
             return foundUser;
         }
+
+       
     }
 }

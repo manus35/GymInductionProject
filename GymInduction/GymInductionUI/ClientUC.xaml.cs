@@ -388,6 +388,9 @@ namespace GymInductionUI
             return validated;
         }
 
+        /// <summary>
+        /// refresh all listviews in each tab
+        /// </summary>
         private void refreshListViews()
         {
             lstIndDetails.ItemsSource = inductions;
