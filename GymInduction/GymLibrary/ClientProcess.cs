@@ -39,7 +39,7 @@ namespace GymLibrary
             {
                 validated = false;
             }
-            if (tbxPhoneNumber.Length == 0 || tbxPhoneNumber.Length > 30)
+            if (tbxPhoneNumber.Length == 0 || tbxPhoneNumber.Length > 10)
             {
                 validated = false;
             }

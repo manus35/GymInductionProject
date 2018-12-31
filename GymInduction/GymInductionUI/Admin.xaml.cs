@@ -35,7 +35,6 @@ namespace GymInductionUI
         List<Log> logs = new List<Log>();
         List<GymLibrary.Client> clients = new List<GymLibrary.Client>();
         List<Evaluation> evaluations = new List<Evaluation>();
-        List<Instructor> instructors = new List<Instructor>();
         User selectedUser = new User();
         Instructor instructor = new Instructor();
         User currentLoggedOnUser = new User();
@@ -43,7 +42,6 @@ namespace GymInductionUI
         double avgHeight = 0;
         double avgWeight = 0;
         int avgCount = 0;
-        Instructor instructorToMatch = new Instructor();
 
         enum DBOperation
         {
@@ -67,7 +65,7 @@ namespace GymInductionUI
         DBOperation dbOperation = new DBOperation();
         public Admin(User user)
         {
-            currentLoggedOnUser = user;           
+            currentLoggedOnUser = user;
             InitializeComponent();
         }
 
@@ -80,7 +78,7 @@ namespace GymInductionUI
         {
             if (dbOperation == DBOperation.Add)
             {
-                
+
 
                 User user = new User();
                 user.FirstName = tbxFirstName.Text.Trim();
@@ -88,14 +86,6 @@ namespace GymInductionUI
                 user.Username = tbxUsername.Text.Trim();
                 user.Password = tbxPassword.Text.Trim();
                 user.LevelId = cmbAccessLevel.SelectedIndex;
-
-                //add the instructor to the instructor table
-                if (user.LevelId == 3)
-                {
-                    instructor.FName = user.FirstName;
-                    instructor.LName = user.LastName;
-                }
-                int insSaveSuccess = saveInstructorRecord(instructor);
 
                 int saveStatus = saveUser(user);
 
@@ -165,10 +155,6 @@ namespace GymInductionUI
             foreach (var log in db.Logs)
             {
                 logs.Add(log);
-            }
-            foreach (var instructor in db.Instructors)
-            {
-                instructors.Add(instructor);
             }
 
             foreach (var client in db.Clients)
@@ -252,36 +238,11 @@ namespace GymInductionUI
 
         private void submenuDelUser_Click(object sender, RoutedEventArgs e)
         {
-            
-
-            //if the user is instructor, remove instructor from instructor table
-            if (selectedUser.LevelId == 3)
-            {
-                foreach (var instructor in db.Instructors)
-                {
-                    if (instructor.FName == selectedUser.FirstName && instructor.LName == selectedUser.LastName)
-                    {
-                        
-                        instructorToMatch = instructor;
-                    }
-                }
-            }
 
             db.Users.RemoveRange(db.Users.Where(t => t.UserId == selectedUser.UserId));
             int saveSuccess = db.SaveChanges();
             if (saveSuccess == 1)
             {
-                try
-                {
-                    //also remove from instructors database
-                    db.Instructors.RemoveRange(db.Instructors.Where(t => t.InstructorId == instructorToMatch.InstructorId));
-                }
-                catch (Exception)
-                {
-                    MessageBox.Show("Problem deleting Instructor record.", "Delete Database", MessageBoxButton.OK, MessageBoxImage.Warning);
-                }
-                
-
                 MessageBox.Show("User Deleted Successfully.", "Delete from Database", MessageBoxButton.OK, MessageBoxImage.Information);
                 logtoSave = loggingProcess.CreateAdminLogEntry("Database", "Successfully deleted", currentLoggedOnUser.UserId, currentLoggedOnUser.Username, selectedUser);
                 saveLogRecord(logtoSave);
@@ -320,14 +281,7 @@ namespace GymInductionUI
 
         }
 
-        /// <summary>
-        /// save instructor record to the database
-        /// </summary>
-        /// <param name="insToSave">
-        /// Instructor record to save </param>
-        /// <returns>
-        /// integer value representing failure or success of method</returns>
-       private int saveInstructorRecord(GymLibrary.Instructor insToSave)
+        private int saveInstructorRecord(GymLibrary.Instructor insToSave)
         {
             int saveSuccess = 0;
             try
@@ -342,7 +296,20 @@ namespace GymInductionUI
             return saveSuccess;
         }
 
-       
+        private int deleteInstructorRecord(GymLibrary.Instructor insToDel)
+        {
+            int saveSuccess = 0;
+            try
+            {
+                db.Entry(insToDel).State = System.Data.Entity.EntityState.Deleted;
+                saveSuccess = db.SaveChanges();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Error deleting Instructor record.", "Save To Database", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            return saveSuccess;
+        }
 
         private void cboChoose_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -583,13 +550,6 @@ namespace GymInductionUI
             return saveSuccess;
         }
 
-        /// <summary>
-        /// Find specific user using id value
-        /// </summary>
-        /// <param name="userId">
-        /// Integer representing id of user to find</param>
-        /// <returns>
-        /// Matching User if found</returns>
         private User findUserByUserId(int userId)
         {
             User foundUser = new User();
@@ -603,7 +563,5 @@ namespace GymInductionUI
             }
             return foundUser;
         }
-
-       
     }
 }
