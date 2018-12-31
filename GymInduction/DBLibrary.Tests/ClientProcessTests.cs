@@ -53,6 +53,7 @@ namespace DBLibrary.Tests
         [InlineData("", "hjh", "09/09/2007", "hjhj", "jhjj", false)]
         [InlineData("jkjk", "", "09/09/1966", "0987656789", "male", false)]
         [InlineData("jkjk", "llk", "", "0987656789", "", false)]
+        [InlineData("jjhb", "hjh", "09/09/2007", "87654567876", "jhjj", false)]
         [InlineData("bnb", "nmnm", "09/09/1966", "", "", false)]
         [InlineData("bnb", "nmnm", "09/09/1966", "098989", "", false)]
         [InlineData("Susan", "Fisherjkjkjiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii" +
